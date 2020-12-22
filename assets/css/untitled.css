@@ -81,14 +81,14 @@ ul li.checked::before {
 }
 
 .close:hover {
-  background-color: #f44336;
+  background-color: #23abe6;
   color: white;
 }
 
 /* Style the header */
 
 .header {
-  background-color: #f44336;
+  background-color: #23abe6;
   padding: 30px 40px;
   color: white;
   text-align: center;
@@ -131,5 +131,21 @@ input {
 
 .addBtn:hover {
   background-color: #bbb;
+}
+
+.button {
+  background-color: #23abe6;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}
+
+.calculate {
+  border-radius: 1px;
 }
 

@@ -10,22 +10,27 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/css/pikaday.min.css">
+    <link rel="stylesheet" href="assets/css/nlp.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
 </head>
 
-<body><div id="myDIV" class="header">
-  <h2>My To Do List</h2>
-  <input type="text" id="myInput" placeholder="Title...">
+<body><h1 style="text-align:center">Constraints</h1>
+<div id="cons-header" class="cons-header">
+<input type="text" id="cons-input" placeholder="Enter constraint..." class="cons-input">
+</div>
+<span onclick="newElement()" class="addBtn">Add</span>
+
+<div id="myDIV" class="header">
+  <h2>Constraints</h2>
+  <input type="text" id="myInput" placeholder="Constraint...">
   <span onclick="newElement()" class="addBtn">Add</span>
 </div>
 
+<div calss="row"></div>
+
+<button class="button calculate">Calculate</button>
+
 <ul id="myUL">
-  <li>Hit the gym</li>
-  <li class="checked">Pay bills</li>
-  <li>Meet George</li>
-  <li>Buy eggs</li>
-  <li>Read a book</li>
-  <li>Organize office</li>
 </ul>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
