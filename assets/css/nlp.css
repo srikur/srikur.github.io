@@ -1,19 +1,38 @@
-h1 {
-  font-size: 50px;
+.nlp #header {
+  /*font-size: 100px;*/
+  padding-top: 3rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
 
-.cons-input {
-  padding: 20px 40px;
+.nlp h1 {
+  font-size: 60px;
+}
+
+.nlp a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.nlp #input {
+  padding: 0 32px;
   background-color: #d6d6d6;
-  border-radius: 5%;
+  border-radius: 25px;
   align-content: center;
   overflow: hidden;
+  /*margin-right: 0.01em;*/
+  outline: none;
+  width: 80%;
+  height: 3.6rem;
+  margin: 0;
+  border: none;
 }
 
-.cons-header {
+#cons-header {
   max-height: 400px;
   /*max-width: 500px;*/
-  margin: 50px 150px;
+  margin: 50px 200px;
   background-color: white;
   /*border: 5px solid #66CCFF;*/
   border-radius: 30px;
@@ -22,5 +41,70 @@ h1 {
   /*align-content: center;*/
   /*border: 5px;*/
   /*overflow: hidden;*/
+}
+
+#addBtn {
+  padding: 0px;
+  width: 60px;
+  background: #23abe6;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 100px;
+  display: inline-block;
+  height: 60px;
+  margin: 0;
+  outline: none;
+  vertical-align: top;
+  border: 0px;
+  margin-left: 70px;
+}
+
+.nlp img {
+  width: 50%;
+  height: 50%;
+  /*background: #f52b2b;*/
+}
+
+.nlp #form2 {
+  align-self: center;
+  display: flex;
+  border-radius: 50px;
+  align-items: center;
+  position: relative;
+  width: 50%;
+  transition: width .4s, background-color .4s;
+  padding: 0px;
+}
+
+.nlp #label {
+  color: #000000;
+  font-size: 1.6rem;
+  top: -3.2rem;
+  position: absolute;
+  left: 37.5%;
+  transform: translateX(-50%);
+}
+
+.nlp #form1 {
+  text-align: center;
+  align-content: center;
+  padding: 100px 40px;
+}
+
+.nlp #calcBtn {
+  background: #23abe6;
+  border-radius: 10px;
+  border: 0;
+  outline: none;
+  width: 100px;
+  height: 50px;
+  text-align: center;
+  align-content: center;
+  /*padding: 30px 40px;*/
+  color: #FFF;
 }
 

@@ -14,24 +14,35 @@
     <link rel="stylesheet" href="assets/css/untitled.css">
 </head>
 
-<body><h1 style="text-align:center">Constraints</h1>
-<div id="cons-header" class="cons-header">
-<input type="text" id="cons-input" placeholder="Enter constraint..." class="cons-input">
-</div>
-<span onclick="newElement()" class="addBtn">Add</span>
+<body class="nlp"><header class="nlp" id="header">
+    <div class="Heading" id="head">
+		<a href="project-grid-cards.html"><h1 class="nlp">NLP</h1></a>
+	</div>
+</header>
 
-<div id="myDIV" class="header">
-  <h2>Constraints</h2>
-  <input type="text" id="myInput" placeholder="Constraint...">
-  <span onclick="newElement()" class="addBtn">Add</span>
-</div>
+<br><br><br><br>
 
-<div calss="row"></div>
+<form class="nlp" id="form2">
+    
+    <label class="nlp" id="label">Enter Constraints</label>
+        
+    <input type="text" class="nlp" id="input" placeholder="Example: ">
 
-<button class="button calculate">Calculate</button>
+    <button onclick="newElement()" id="addBtn"><img src="assets/img/plus.png"></button>
 
-<ul id="myUL">
-</ul>
+</form>
+
+<form class="nlp" id="form1">
+
+    <button id="calcBtn">Calculate</button>
+
+</form>
+
+<main class="nlp" id="main">
+    <label class="nlp" id="consLabel">Constraints:<label>
+    <ul class="nlp" id="constraintList">
+    </ul>
+</main>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
