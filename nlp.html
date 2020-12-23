@@ -10,39 +10,48 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/css/pikaday.min.css">
+    <link rel="stylesheet" href="assets/css/list.css">
     <link rel="stylesheet" href="assets/css/nlp.css">
-    <link rel="stylesheet" href="assets/css/untitled.css">
 </head>
 
-<body class="nlp"><header class="nlp" id="header">
-    <div class="Heading" id="head">
-		<a href="project-grid-cards.html"><h1 class="nlp">NLP</h1></a>
-	</div>
-</header>
+<body class="nlp">
+    <h1>NLP</h1><div style="text-align: center">
 
-<br><br><br><br>
-
-<form class="nlp" id="form2">
+    <input class="nlp" type="text" id="varsInput"
+           placeholder="Enter variables..." oninput="checkVariable(); return false"> 
+    <button type="button" onclick="newVariable()" class="nlp" id="addVar"> 
+        <img src="assets/plus.png">
+    </button>
     
-    <label class="nlp" id="label">Enter Constraints</label>
-        
-    <input type="text" class="nlp" id="input" placeholder="Example: ">
-
-    <button onclick="newElement()" id="addBtn"><img src="assets/img/plus.png"></button>
-
-</form>
-
-<form class="nlp" id="form1">
-
-    <button id="calcBtn">Calculate</button>
-
-</form>
-
-<main class="nlp" id="main">
-    <label class="nlp" id="consLabel">Constraints:<label>
-    <ul class="nlp" id="constraintList">
+    <ul id="variableList">
     </ul>
-</main>
+
+    <br><br><br><br>
+    
+    <input class="nlp" type="text" id="consInput"
+           placeholder="Enter constraint..." oninput="checkConstraint(); return false"> 
+    <button type="button" onclick="newConstraint()" class="nlp" id="addBtn"> 
+        <img src="assets/plus.png">
+    </button>
+    
+    <ul id="constraintList">
+    </ul>
+    
+    <br><br><br><br>
+
+    <button type="button" onclick="calculate()" class="nlp" id="calcBtn">
+        Calculate
+    </button>
+
+    <br><br><br><br>
+    
+    <label class="nlp" id="errorLabel">Error Messages:</label>
+    
+    <br>
+    
+    <label class="nlp" id="errorMsg"></label>
+
+</div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
