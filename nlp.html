@@ -17,27 +17,41 @@
 <body class="nlp">
     <h1>NLP</h1><div style="text-align: center">
 
+    <label>Enter Variables</label><br>
     <input class="nlp" type="text" id="varsInput"
-           placeholder="Enter variables..." oninput="checkVariable(); return false"> 
+           placeholder="Example: var1" oninput="checkVariable(); return false"> 
     <button type="button" onclick="newVariable()" class="nlp" id="addVar"> 
         <img src="assets/plus.png">
     </button>
     
-    <ul id="variableList">
+    <ul class="vars" id="variableList">
     </ul>
 
-    <br><br><br><br>
+    <br>
     
+    <label>Enter Constraints</label><br>
     <input class="nlp" type="text" id="consInput"
-           placeholder="Enter constraint..." oninput="checkConstraint(); return false"> 
+           placeholder="Example: -1 -2 G" oninput="checkConstraint(); return false"> 
     <button type="button" onclick="newConstraint()" class="nlp" id="addBtn"> 
         <img src="assets/plus.png">
     </button>
     
-    <ul id="constraintList">
+    <ul class="cons" id="constraintList">
     </ul>
     
-    <br><br><br><br>
+    <br>
+    
+    <label>Enter Objective Function</label><br>
+    <input class="nlp" type="text" id="objInput"
+           placeholder="Example: 1 -2 Max" oninput="checkObjective(); return false"> 
+    <button type="button" onclick="newObjective()" class="nlp" id="addObj"> 
+        <img src="assets/plus.png">
+    </button>
+    
+    <ul class="cons" id="objectiveList">
+    </ul>
+    
+    <br><br>
 
     <button type="button" onclick="calculate()" class="nlp" id="calcBtn">
         Calculate
@@ -56,6 +70,7 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
     <script src="assets/js/nlp.js"></script>
+    <script src="assets/js/require.js"></script>
     <script src="assets/js/theme.js"></script>
 </body>
 
