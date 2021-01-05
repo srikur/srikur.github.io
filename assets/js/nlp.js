@@ -235,39 +235,28 @@ function newConstraint() {
   }
 }
 
-function calculate() {
-    var nlopt = 'nlopt';
-    require([nlopt], function(result){
-        nlopt = result;
-        var myfunc = function(n, x, grad){
-          if(grad){
-            grad[0] = 0.0;
-            grad[1] = 0.5 / Math.sqrt(x[1]);
-          }
-          return Math.sqrt(x[1]);
+function calculate()
+{
+    let xmlhttp;
+    
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            return xmlhttp.responseText;
         }
-        var createMyConstraint = function(cd){
-          return {
-            callback:function(n, x, grad){
-              if(grad){
-                grad[0] = 3.0 * cd[0] * (cd[0]*x[0] + cd[1]) * (cd[0]*x[0] + cd[1])
-                grad[1] = -1.0
-              }
-              tmp = cd[0]*x[0] + cd[1]
-              return tmp * tmp * tmp - x[1]
-            },
-            tolerance:1e-8
-          }
-        }
-        options = {
-          algorithm: "LD_MMA",
-          numberOfParameters:2,
-          minObjectiveFunction: myfunc,
-          inequalityConstraints:[createMyConstraint([2.0, 0.0]), createMyConstraint([-1.0, 1.0])],
-          xToleranceRelative:1e-4,
-          initalGuess:[1.234, 5.678],
-          lowerBounds:[Number.MIN_VALUE, 0]
-        }
-        console.log(nlopt(options).parameterValues);
-        });    
+    }
+    theUrl = "https://srikur.herokuapp.com";
+    xmlhttp.open("GET", theUrl, false );
+    xmlhttp.send();   
+    
+    document.getElementById("resultLabel").innerHTML = "Result: " + xmlhttp.responseText;
 }
