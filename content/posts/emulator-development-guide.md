@@ -155,11 +155,11 @@ Let's say we have an 8-bit unsigned integer `a` that has the following value in 
 a = 10110101
 ```
 
-The logical shift left operation "shifts" the bits over to the left by the specified amount. For example, if we write `a << 1`, we shift the bits over to the left by one place. Note that the left-most bit in this case is lost, and the right-most bit that is filled is a 0:
+The logical shift right operation "shifts" the bits over to the right by the specified amount. For example, if we write `a << 1`, we shift the bits over to the right by one place. Note that the right-most bit in this case is lost, and the left-most bit that is filled is a 0:
 
 ```
 a =      10110101
-a << 1 = 01101010
+a >> 1 = 01011010
 ```
 
 #### Logical NOT
