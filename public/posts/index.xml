@@ -1,7 +1,15 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>All Posts - My New Hugo Site</title>
-        <link>https://example.org/posts/</link>
-        <description>All Posts | My New Hugo Site</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 03 Jun 2024 19:45:08 -0400</lastBuildDate><atom:link href="https://example.org/posts/" rel="self" type="application/rss+xml" /></channel>
+        <title>All Posts - srikur&#39;s dev page</title>
+        <link>https://srikur.github.io/posts/</link>
+        <description>All Posts | srikur&#39;s dev page</description>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 04 Jun 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://srikur.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Emulator Development Guide</title>
+    <link>https://srikur.github.io/posts/emulator-development-guide/</link>
+    <pubDate>Mon, 03 Jun 2024 00:00:00 &#43;0000</pubDate>
+    <author>srikur</author>
+    <guid>https://srikur.github.io/posts/emulator-development-guide/</guid>
+    <description><![CDATA[Emulator Development Guide I&rsquo;ve recently started my first full-time job that&rsquo;s not an internship or research at a university, so I feel like I&rsquo;ve finally gained some baseline credbility to be able to diffuse some of my knowledge back to the community. I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody.]]></description>
+</item>
+</channel>
 </rss>

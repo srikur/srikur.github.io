@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Emulator Development Guide - srikur&#39;s dev page</title><meta name="Description" content="Blog posts by Srikur"><meta property="og:url" content="https://srikur.github.io/posts/emulator-development-guide/">
+  <meta property="og:site_name" content="srikur&#39;s dev page">
+  <meta property="og:title" content="Emulator Development Guide">
+  <meta property="og:description" content="Emulator Development Guide I’ve recently started my first full-time job that’s not an internship or research at a university, so I feel like I’ve finally gained some baseline credbility to be able to diffuse some of my knowledge back to the community. I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-06-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-06-03T22:16:00-04:00">
+    <meta property="og:image" content="https://srikur.github.io/logo.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://srikur.github.io/logo.png">
+  <meta name="twitter:title" content="Emulator Development Guide">
+  <meta name="twitter:description" content="Emulator Development Guide I’ve recently started my first full-time job that’s not an internship or research at a university, so I feel like I’ve finally gained some baseline credbility to be able to diffuse some of my knowledge back to the community. I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody.">
+      <meta name="twitter:site" content="@SrikurKanu">
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://srikur.github.io/posts/emulator-development-guide/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Emulator Development Guide",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/srikur.github.io\/posts\/emulator-development-guide\/"
+        },"genre": "posts","wordcount":  1608 ,
+        "url": "https:\/\/srikur.github.io\/posts\/emulator-development-guide\/","datePublished": "2024-06-03T00:00:00+00:00","dateModified": "2024-06-03T22:16:00-04:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "srikur"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="srikur&#39;s dev page">srikur</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="View all posts"> Posts </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="srikur&#39;s dev page">srikur</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="View all posts">Posts</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Emulator Development Guide</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>srikur</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-06-03">2024-06-03</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1608 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;8 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#what-exactly-is-an-emulator">What Exactly is an Emulator?</a></li>
+    <li><a href="#the-main-loop">The Main Loop</a>
+      <ul>
+        <li><a href="#roms">ROMs</a></li>
+      </ul>
+    </li>
+    <li><a href="#tips">Tips</a>
+      <ul>
+        <li><a href="#graphics-libraries">Graphics Libraries</a></li>
+        <li><a href="#bit-manipulation--bitwise-operations">Bit Manipulation + Bitwise Operations</a></li>
+        <li><a href="#bit-masking">Bit Masking</a></li>
+        <li><a href="#hexadecimal">Hexadecimal</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="emulator-development-guide">Emulator Development Guide</h1>
+<p>I&rsquo;ve recently started my first full-time job that&rsquo;s not an internship or research at a university, so I feel like I&rsquo;ve finally gained some baseline credbility to be able to diffuse some of my knowledge back to the community. I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody. My goal is to have easy-to-follow, comprehensive guides for several of the most popular video game consoles from the 1980s, 1990s, and early 2000s. I will provide step-by-step instructions, along with source code in several languages: C++, Java, Python, Rust, OCaml, and Swift. The order below is the order in which we&rsquo;ll build these emulators, starting out with the simple CHIP-8 system. I think you&rsquo;ll find the first project an easy to tackle, but rewarding experience. It will also introduce a lot of the concepts that we&rsquo;ll need for the more &ldquo;real&rdquo; video game systems. Emulators 1-5 are solid mid-size projects that you can put on your resume, but if you make it all the way to the Nintendo DS and beyond, you&rsquo;re certainly in the &ldquo;large, impressive&rdquo; project category range.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">As of 6/22/2024, I&rsquo;m halfway through writing the first post, about the CHIP-8, and I&rsquo;ve written the code for it in 4/6 languages. I&rsquo;m going to try to finish the Gameboy Color and NES articles by the end of the summer. I&rsquo;m including this note so I can hold myself accountable for getting it done.</div>
+        </div>
+    </div>
+<h2 id="roadmap">Roadmap</h2>
+<ol>
+<li><a href="/posts/chip-8/" rel="">Crawling: CHIP-8</a></li>
+<li><a href="/posts/gameboy-color" rel="">First Steps: Gameboy / Gameboy Color</a></li>
+<li><a href="/posts/nintendo-entertainment-system" rel="">Walking: NES</a></li>
+<li><a href="/posts/super-nes" rel="">Running: SNES</a></li>
+<li><a href="/posts/gameboy-advanced" rel="">Biking: Gameboy Advanced</a></li>
+<li><a href="/posts/nintendo-ds" rel="">Driving: Nintendo DS</a></li>
+<li><a href="/posts/nintendo-64" rel="">Flying: Nintendo 64</a></li>
+<li><a href="/posts/playstation-one" rel="">Teleporting: PlayStation 1</a></li>
+</ol>
+<p>I plan on having every line of code for each system in all the languages available on GitHub and all of the code related to logic in the posts, but I highly encourage you to take a first pass at them without looking at the code. Hopefully, you&rsquo;re reading this because you&rsquo;re looking for a very challenging, but also extremely rewarding programming project. You&rsquo;ll find that writing emulators ticks both those boxes, with the bonus of the satisfaction of playing classic games on software you&rsquo;ve built yourself.</p>
+<h2 id="what-exactly-is-an-emulator">What Exactly is an Emulator?</h2>
+<p>If you&rsquo;ve never used an emulator before, you should probably go and try one right now so you have an idea of what exactly you&rsquo;re going to be building. Wikipedia&rsquo;s definition for <a href="https://en.wikipedia.org/wiki/Emulator" target="_blank" rel="noopener noreffer ">emulators</a> states that it&rsquo;s &ldquo;hardware or software that enables one computer system (called the <em>host</em>) to behave like another computer system (called the <em>guest</em>).&rdquo;</p>
+<blockquote>
+<p>Check out <strong>Visual Boy Advance (VBA)</strong> or <strong>DeSmuME</strong> for examples of popular, well-built emulators. If you&rsquo;re on a mobile device, check out <strong>Delta</strong>. Of course, for each of these you&rsquo;ll have to provide your own ROMs (basically executable dumps of the GBA or DS cartridges in this case), which I believe can only legally be done if you already own the physical versions of the games you want. Google &ldquo;GBA roms&rdquo; or &ldquo;NDS roms&rdquo; to get more information on that.</p>
+</blockquote>
+<p>Since an emulator recreates the entire functionality of a system, we&rsquo;ll have to implement all the components of the system too. The central processing unit (CPU) is where the calculations actually take place, and that&rsquo;s where the instruction fetching and decoding will take place.</p>
+<h2 id="the-main-loop">The Main Loop</h2>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Coming soon!</div>
+        </div>
+    </div>
+<h3 id="roms">ROMs</h3>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Coming soon!</div>
+        </div>
+    </div>
+<h2 id="tips">Tips</h2>
+<h3 id="graphics-libraries">Graphics Libraries</h3>
+<p>Since video game consoles draw pixels, sprites, and models to screens, we&rsquo;ll need some way of doing the same thing. Depending on the language you choose, there are a plethora of options available to you, but I&rsquo;ll be using <a href="https://www.libsdl.org/" target="_blank" rel="noopener noreffer ">SDL</a>, <a href="https://www.opengl.org/" target="_blank" rel="noopener noreffer ">OpenGL</a>, and <a href="https://developer.apple.com/spritekit/" target="_blank" rel="noopener noreffer ">SpriteKit</a>, depending on the language and platform I&rsquo;m building for. You&rsquo;ll likely want to find other online resources to learn more about them, as I&rsquo;ll only be giving you basic setup advice.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">More information coming soon!</div>
+        </div>
+    </div>
+<h3 id="bit-manipulation--bitwise-operations">Bit Manipulation + Bitwise Operations</h3>
+<p>By the time you&rsquo;re done with a couple emulators, you&rsquo;ll be an expert in bit manipulation and how to extract the information you need from integers of specific sizes. There are tons of resources out there about this topic, but [here&rsquo;s] a link to a page on GitHub explaining what I&rsquo;m about to do below as well. As I&rsquo;m sure you know, a computer stores numbers (and everything else) as bytes, which are composed of 8 bits each.</p>
+<blockquote>
+<p>Note the difference between <em>unsigned</em> and <em>signed</em> values! The language you&rsquo;re working with will likely have separate data types of the two, but it may not, or they may not be convenient to use, in which case you&rsquo;ll have to be even more careful. As the name suggests, <em>signed</em> integers have a sign &mdash; that is, they can have negative values &mdash; whereas <em>unsigned</em> integers do not. For example, a <em>signed</em> 8-bit (i.e. one byte) integer can contain values from -127 to 128, while an <em>unsigned</em> 8-bit integer can hold values from 0 to 255.</p>
+</blockquote>
+<p>There are a few operations that we can do &ldquo;bitwise&rdquo;, meaning bit-by-bit, and every programming language has support for these operators, although the syntax will vary. For the six languages we&rsquo;ll be using, here are the bitwise operators:</p>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Operators</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C++</td>
+<td><code>&amp;</code>, <code>|</code>, <code>^</code>, <code>&gt;&gt;</code>, <code>&lt;&lt;</code>, <code>!</code></td>
+</tr>
+<tr>
+<td>Python</td>
+<td><code>&amp;</code>, <code>|</code>, <code>^</code>, <code>&gt;&gt;</code>, <code>&lt;&lt;</code>, <code>!</code></td>
+</tr>
+<tr>
+<td>Java</td>
+<td><code>&amp;</code>, <code>|</code>, <code>^</code>, <code>&gt;&gt;</code>, <code>&lt;&lt;</code>, <code>!</code></td>
+</tr>
+<tr>
+<td>Swift</td>
+<td><code>&amp;</code>, <code>|</code>, <code>^</code>, <code>&gt;&gt;</code>, <code>&lt;&lt;</code>, <code>!</code></td>
+</tr>
+<tr>
+<td>OCaml</td>
+<td><code>land</code>, <code>lor</code>, <code>lxor</code>, <code>lsr</code>, <code>lsl</code>, <code>lnot</code></td>
+</tr>
+<tr>
+<td>Rust</td>
+<td><code>&amp;</code>, <code>|</code>, <code>^</code>, <code>&gt;&gt;</code>, <code>&lt;&lt;</code>, <code>!</code></td>
+</tr>
+</tbody>
+</table>
+<p>You&rsquo;ll notice that OCaml is the only language of the six that has a different syntax for the operators.</p>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw" aria-hidden="true"></i>Warning<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">A common source of bugs when writing emulators is the differences in operator precedence across languages. For example, in C++ the <code>&gt;&gt;</code> operator has higher precedence than the <code>&amp;</code> operator, so if you have an expression like <code>a &amp; b &gt;&gt; 8</code> (which you&rsquo;ll see a lot of very soon in the CHIP-8 guide), the value of <code>b</code> is shifted right by 8 <strong>BEFORE</strong> it is logically <code>AND</code>ed wth <code>a</code>. In fact, when we get to the CHIP-8 stuff, you&rsquo;ll see that what we usually want is <code>(a &amp; b) &gt;&gt; 8</code>. Note that not all of the languages have the same precedence you expect, and it can be a frustrating problem to debug in complicated expressions.</div>
+        </div>
+    </div>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Tip<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Most programming languages will also support operators for bitwise operation and assignment. For example, just as <code>a += b</code> adds the value of <code>b</code> to <code>a</code> and stores it back in <code>a</code>, <code>a &amp;= b</code> will perform a bitwise AND of <code>a</code> and <code>b</code> and store the result back in <code>a</code>.</div>
+        </div>
+    </div>
+<h4 id="bitwise-and">Bitwise AND</h4>
+<p>Let&rsquo;s say we have two 8-bit unsigned integers <code>a</code> and <code>b</code>, and they have the following values in binary:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a = 01011011
+</span></span><span class="line"><span class="cl">b = 10010001
+</span></span></code></pre></div><p>As you may know, the leading zeroes can be omitted from binary values (just like they can be in decimal or hexadecimal), but I&rsquo;ll leave them in for clarity. The bitwise <code>AND</code> operation returns 1 if both values have a value of 1 and 0 for all three other cases. So in the example above, <code>a &amp; b</code> will yield:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a =     11011011
+</span></span><span class="line"><span class="cl">b =     10010001
+</span></span><span class="line"><span class="cl">a &amp; b = 10010001
+</span></span></code></pre></div><h4 id="bitwise-or">Bitwise OR</h4>
+<p>Let&rsquo;s say we have two 8-bit unsigned integers <code>a</code> and <code>b</code>, and they have the following values in binary:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a = 01011011
+</span></span><span class="line"><span class="cl">b = 10010001
+</span></span></code></pre></div><p>The bitwise <code>OR</code> operation returns 1 if EITHER bit is 1 and 0 in the case that both bits are 0. So in the example above, <code>a | b</code> will yield:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a =     11011011
+</span></span><span class="line"><span class="cl">b =     10010001
+</span></span><span class="line"><span class="cl">a | b = 11011011
+</span></span></code></pre></div><h4 id="bitwise-xor">Bitwise XOR</h4>
+<p>Let&rsquo;s say we have two 8-bit unsigned integers <code>a</code> and <code>b</code>, and they have the following values in binary:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a = 01011011
+</span></span><span class="line"><span class="cl">b = 10010001
+</span></span></code></pre></div><p>The bitwise <code>XOR</code> operation, called the &ldquo;exclusive OR&rdquo;, is like <code>OR</code> but excludes the case where both bits are the same. In other words, it returns 1 if both bits are different and 0 if both bits are the same. So in the example above, <code>a ^ b</code> will yield:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a =     11011011
+</span></span><span class="line"><span class="cl">b =     10010001
+</span></span><span class="line"><span class="cl">a ^ b = 01001010
+</span></span></code></pre></div><h4 id="logical-shift-left">Logical Shift Left</h4>
+<p>Let&rsquo;s say we have an 8-bit unsigned integer <code>a</code> that has the following value in binary:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a = 10110101
+</span></span></code></pre></div><p>The logical shift left operation &ldquo;shifts&rdquo; the bits over to the left by the specified amount. For example, if we write <code>a &lt;&lt; 1</code>, we shift the bits over to the left by one place. Note that the left-most bit in this case is lost, and the right-most bit that is filled is a 0:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a =      10110101
+</span></span><span class="line"><span class="cl">a &lt;&lt; 1 = 01101010
+</span></span></code></pre></div><h4 id="logical-shift-right">Logical Shift Right</h4>
+<p>Let&rsquo;s say we have an 8-bit unsigned integer <code>a</code> that has the following value in binary:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a = 10110101
+</span></span></code></pre></div><p>The logical shift left operation &ldquo;shifts&rdquo; the bits over to the left by the specified amount. For example, if we write <code>a &lt;&lt; 1</code>, we shift the bits over to the left by one place. Note that the left-most bit in this case is lost, and the right-most bit that is filled is a 0:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a =      10110101
+</span></span><span class="line"><span class="cl">a &lt;&lt; 1 = 01101010
+</span></span></code></pre></div><h4 id="logical-not">Logical NOT</h4>
+<p>The logical <code>NOT</code> operator simply negates (flips) the bits of the value. For example, <code>!a</code> yields:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a =  10110101
+</span></span><span class="line"><span class="cl">!a = 01001010
+</span></span></code></pre></div><h3 id="bit-masking">Bit Masking</h3>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Coming soon!</div>
+        </div>
+    </div>
+<h3 id="hexadecimal">Hexadecimal</h3>
+<p>It&rsquo;s worth its weight in gold to become comfortable with hexadecimal representations of numbers, especially with regards to bit masking and setting.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">More information coming soon!</div>
+        </div>
+    </div>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-06-03</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://srikur.github.io/posts/emulator-development-guide/" data-title="Emulator Development Guide" data-via="SrikurKanu"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://srikur.github.io/posts/emulator-development-guide/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://srikur.github.io/posts/emulator-development-guide/" data-title="Emulator Development Guide"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://srikur.github.io/posts/emulator-development-guide/" data-title="Emulator Development Guide"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://srikur.github.io/posts/emulator-development-guide/" data-title="Emulator Development Guide"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.126.3">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2024</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">srikur</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":100},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
