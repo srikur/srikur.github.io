@@ -12,7 +12,7 @@
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2024-06-03T00:00:00+00:00">
-    <meta property="article:modified_time" content="2024-06-03T22:16:00-04:00">
+    <meta property="article:modified_time" content="2024-06-22T18:43:46-07:00">
     <meta property="og:image" content="https://srikur.github.io/logo.png">
 
   <meta name="twitter:card" content="summary_large_image">
@@ -34,8 +34,8 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/srikur.github.io\/posts\/emulator-development-guide\/"
-        },"genre": "posts","wordcount":  1608 ,
-        "url": "https:\/\/srikur.github.io\/posts\/emulator-development-guide\/","datePublished": "2024-06-03T00:00:00+00:00","dateModified": "2024-06-03T22:16:00-04:00","publisher": {
+        },"genre": "posts","wordcount":  1770 ,
+        "url": "https:\/\/srikur.github.io\/posts\/emulator-development-guide\/","datePublished": "2024-06-03T00:00:00+00:00","dateModified": "2024-06-22T18:43:46-07:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -76,8 +76,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Emulator Development Guide</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>srikur</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-06-03">2024-06-03</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1608 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;8 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-06-03">2024-06-03</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1770 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;9 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -86,10 +86,10 @@
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#what-exactly-is-an-emulator">What Exactly is an Emulator?</a></li>
-    <li><a href="#the-main-loop">The Main Loop</a>
+    <li><a href="#what-exactly-is-an-emulator">What Exactly is an Emulator?</a>
       <ul>
         <li><a href="#roms">ROMs</a></li>
+        <li><a href="#the-main-loop">The Main Loop</a></li>
       </ul>
     </li>
     <li><a href="#tips">Tips</a>
@@ -123,23 +123,24 @@
 <li><a href="/posts/nintendo-64" rel="">Flying: Nintendo 64</a></li>
 <li><a href="/posts/playstation-one" rel="">Teleporting: PlayStation 1</a></li>
 </ol>
-<p>I plan on having every line of code for each system in all the languages available on GitHub and all of the code related to logic in the posts, but I highly encourage you to take a first pass at them without looking at the code. Hopefully, you&rsquo;re reading this because you&rsquo;re looking for a very challenging, but also extremely rewarding programming project. You&rsquo;ll find that writing emulators ticks both those boxes, with the bonus of the satisfaction of playing classic games on software you&rsquo;ve built yourself.</p>
+<p>I plan on having every line of code for each system in all the languages available on GitHub and all of the code related to logic in the posts, but I highly encourage you to take a first pass at the components without looking at the code. Only consult my code (or any other emulator&rsquo;s code) once you&rsquo;ve tried debugging but are stuck. Hopefully, you&rsquo;re reading this because you&rsquo;re looking for a very challenging, but also extremely rewarding programming project. You&rsquo;ll find that writing emulators ticks both those boxes, with the bonus of the satisfaction of playing classic games on software you&rsquo;ve built yourself.</p>
 <h2 id="what-exactly-is-an-emulator">What Exactly is an Emulator?</h2>
-<p>If you&rsquo;ve never used an emulator before, you should probably go and try one right now so you have an idea of what exactly you&rsquo;re going to be building. Wikipedia&rsquo;s definition for <a href="https://en.wikipedia.org/wiki/Emulator" target="_blank" rel="noopener noreffer ">emulators</a> states that it&rsquo;s &ldquo;hardware or software that enables one computer system (called the <em>host</em>) to behave like another computer system (called the <em>guest</em>).&rdquo;</p>
+<p>If you&rsquo;ve never used an emulator before, you should probably go and try one right now so you have an idea of what exactly you&rsquo;re going to be building. Wikipedia&rsquo;s definition for <a href="https://en.wikipedia.org/wiki/Emulator" target="_blank" rel="noopener noreffer ">emulators</a> states that it&rsquo;s &ldquo;hardware or software that enables one computer system (called the <em>host</em>) to behave like another computer system (called the <em>guest</em>).&rdquo; What we&rsquo;ll be doing is <em>emulating</em> the hardware of various video game consoles so that you can play games for those systems on your computer.</p>
 <blockquote>
 <p>Check out <strong>Visual Boy Advance (VBA)</strong> or <strong>DeSmuME</strong> for examples of popular, well-built emulators. If you&rsquo;re on a mobile device, check out <strong>Delta</strong>. Of course, for each of these you&rsquo;ll have to provide your own ROMs (basically executable dumps of the GBA or DS cartridges in this case), which I believe can only legally be done if you already own the physical versions of the games you want. Google &ldquo;GBA roms&rdquo; or &ldquo;NDS roms&rdquo; to get more information on that.</p>
 </blockquote>
-<p>Since an emulator recreates the entire functionality of a system, we&rsquo;ll have to implement all the components of the system too. The central processing unit (CPU) is where the calculations actually take place, and that&rsquo;s where the instruction fetching and decoding will take place.</p>
-<h2 id="the-main-loop">The Main Loop</h2>
+<p>Since an emulator recreates the entire functionality of a system, we&rsquo;ll have to implement all the components of the system too. For the consoles we&rsquo;ll handle, there might be components like the Central Processing Unit (CPU), Picture Processing Unit (PPU), Audio Processing Unit (APU), and so on. What&rsquo;s nice is that these components provide a sensible template for organizing your code among separate files. Of course, the most important one is the CPU, which</p>
+<h3 id="roms">ROMs</h3>
+<p>The game cartridges for the NES, Gameboy, and others are physical data that you plug into your consoles. So how are we going to emulate that functionality on a modern computer? The answer is by using <strong>ROMs</strong>, which you can think of as compiled, machine-code binaries that are dumped from those actual physical cartridges. When we read these binary files into our emnulator programs, we  I encourage you to use a lightweight hex editor, such as <a href="https://mh-nexus.de/en/hxd/" target="_blank" rel="noopener noreffer ">HxD</a> if you&rsquo;re on Windows, to view various ROMs and see what</p>
 <div class="details admonition info open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
         </div>
         <div class="details-content">
-            <div class="admonition-content">Coming soon!</div>
+            <div class="admonition-content">More information coming soon!</div>
         </div>
     </div>
-<h3 id="roms">ROMs</h3>
+<h3 id="the-main-loop">The Main Loop</h3>
 <div class="details admonition info open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
@@ -249,9 +250,9 @@
 </span></span></code></pre></div><h4 id="logical-shift-right">Logical Shift Right</h4>
 <p>Let&rsquo;s say we have an 8-bit unsigned integer <code>a</code> that has the following value in binary:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a = 10110101
-</span></span></code></pre></div><p>The logical shift left operation &ldquo;shifts&rdquo; the bits over to the left by the specified amount. For example, if we write <code>a &lt;&lt; 1</code>, we shift the bits over to the left by one place. Note that the left-most bit in this case is lost, and the right-most bit that is filled is a 0:</p>
+</span></span></code></pre></div><p>The logical shift right operation &ldquo;shifts&rdquo; the bits over to the right by the specified amount. For example, if we write <code>a &lt;&lt; 1</code>, we shift the bits over to the right by one place. Note that the right-most bit in this case is lost, and the left-most bit that is filled is a 0:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a =      10110101
-</span></span><span class="line"><span class="cl">a &lt;&lt; 1 = 01101010
+</span></span><span class="line"><span class="cl">a &gt;&gt; 1 = 01011010
 </span></span></code></pre></div><h4 id="logical-not">Logical NOT</h4>
 <p>The logical <code>NOT</code> operator simply negates (flips) the bits of the value. For example, <code>!a</code> yields:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a =  10110101
@@ -279,7 +280,7 @@
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2024-06-03</span>
+                <span>Updated on 2024-06-22</span>
             </div></div>
         <div class="post-info-line">
             <div class="post-info-md"></div>

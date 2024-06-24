@@ -22,23 +22,25 @@ As of 6/22/2024, I'm halfway through writing the first post, about the CHIP-8, a
 7. [Flying: Nintendo 64](/posts/nintendo-64)
 8. [Teleporting: PlayStation 1](/posts/playstation-one)
 
-I plan on having every line of code for each system in all the languages available on GitHub and all of the code related to logic in the posts, but I highly encourage you to take a first pass at them without looking at the code. Hopefully, you're reading this because you're looking for a very challenging, but also extremely rewarding programming project. You'll find that writing emulators ticks both those boxes, with the bonus of the satisfaction of playing classic games on software you've built yourself.
+I plan on having every line of code for each system in all the languages available on GitHub and all of the code related to logic in the posts, but I highly encourage you to take a first pass at the components without looking at the code. Only consult my code (or any other emulator's code) once you've tried debugging but are stuck. Hopefully, you're reading this because you're looking for a very challenging, but also extremely rewarding programming project. You'll find that writing emulators ticks both those boxes, with the bonus of the satisfaction of playing classic games on software you've built yourself.
 
 ## What Exactly is an Emulator?
 
-If you've never used an emulator before, you should probably go and try one right now so you have an idea of what exactly you're going to be building. Wikipedia's definition for [emulators](https://en.wikipedia.org/wiki/Emulator) states that it's "hardware or software that enables one computer system (called the *host*) to behave like another computer system (called the *guest*)."
+If you've never used an emulator before, you should probably go and try one right now so you have an idea of what exactly you're going to be building. Wikipedia's definition for [emulators](https://en.wikipedia.org/wiki/Emulator) states that it's "hardware or software that enables one computer system (called the *host*) to behave like another computer system (called the *guest*)." What we'll be doing is *emulating* the hardware of various video game consoles so that you can play games for those systems on your computer.
 
 >Check out **Visual Boy Advance (VBA)** or **DeSmuME** for examples of popular, well-built emulators. If you're on a mobile device, check out **Delta**. Of course, for each of these you'll have to provide your own ROMs (basically executable dumps of the GBA or DS cartridges in this case), which I believe can only legally be done if you already own the physical versions of the games you want. Google "GBA roms" or "NDS roms" to get more information on that.
 
-Since an emulator recreates the entire functionality of a system, we'll have to implement all the components of the system too. The central processing unit (CPU) is where the calculations actually take place, and that's where the instruction fetching and decoding will take place.
-
-## The Main Loop
-
-{{< admonition info >}}
-Coming soon!
-{{< /admonition >}}
+Since an emulator recreates the entire functionality of a system, we'll have to implement all the components of the system too. For the consoles we'll handle, there might be components like the Central Processing Unit (CPU), Picture Processing Unit (PPU), Audio Processing Unit (APU), and so on. What's nice is that these components provide a sensible template for organizing your code among separate files. Of course, the most important one is the CPU, which 
 
 ### ROMs
+
+The game cartridges for the NES, Gameboy, and others are physical data that you plug into your consoles. So how are we going to emulate that functionality on a modern computer? The answer is by using **ROMs**, which you can think of as compiled, machine-code binaries that are dumped from those actual physical cartridges. When we read these binary files into our emnulator programs, we  I encourage you to use a lightweight hex editor, such as [HxD](https://mh-nexus.de/en/hxd/) if you're on Windows, to view various ROMs and see what 
+
+{{< admonition info >}}
+More information coming soon!
+{{< /admonition >}}
+
+### The Main Loop
 
 {{< admonition info >}}
 Coming soon!
