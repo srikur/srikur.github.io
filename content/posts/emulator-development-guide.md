@@ -30,20 +30,47 @@ If you've never used an emulator before, you should probably go and try one righ
 
 >Check out **Visual Boy Advance (VBA)** or **DeSmuME** for examples of popular, well-built emulators. If you're on a mobile device, check out **Delta**. Of course, for each of these you'll have to provide your own ROMs (basically executable dumps of the GBA or DS cartridges in this case), which I believe can only legally be done if you already own the physical versions of the games you want. Google "GBA roms" or "NDS roms" to get more information on that.
 
-Since an emulator recreates the entire functionality of a system, we'll have to implement all the components of the system too. For the consoles we'll handle, there might be components like the Central Processing Unit (CPU), Picture Processing Unit (PPU), Audio Processing Unit (APU), and so on. What's nice is that these components provide a sensible template for organizing your code among separate files. Of course, the most important one is the CPU, which 
+Since an emulator recreates the entire functionality of a system, we'll have to implement all the components of the system too. For the consoles we'll handle, there might be components like the Central Processing Unit (CPU), Picture Processing Unit (PPU), Audio Processing Unit (APU), and so on. What's nice is that these components provide a sensible template for organizing your code among separate files. Of course, the most important one is the CPU, which handles executing the instructions that are contained in **ROMs** and keeping the system organized. 
 
 ### ROMs
 
-The game cartridges for the NES, Gameboy, and others are physical data that you plug into your consoles. So how are we going to emulate that functionality on a modern computer? The answer is by using **ROMs**, which you can think of as compiled, machine-code binaries that are dumped from those actual physical cartridges. When we read these binary files into our emnulator programs, we  I encourage you to use a lightweight hex editor, such as [HxD](https://mh-nexus.de/en/hxd/) if you're on Windows, to view various ROMs and see what 
+The game cartridges for the NES, Gameboy, and others are physical data that you plug into your consoles. So how are we going to emulate that functionality on a modern computer? The answer is by using **ROMs**, which you can think of as compiled, machine-code binaries that are dumped from those actual physical cartridges. When we read these binary files into our emulator programs, we will place them in our programs' memory (at least for the first few emulators, where the size of the ROMs isn't a limitation on modern hardware). A ROM when viewed as a stream of bytes, contains machine code instructions for the processor of the console -- that's what allows your Gameboy to actually play the game. Those machine code intructions map to processor-specific **assembly language instructions**, the next level of abstraction. These **opcodes** are much easier to work with when you write byte values in hexadecimal. A single unsigned byte in hex ranges from `0x00` to `0xFF`, or 0 to 255 in decimal.
+
+{{< admonition tip >}}
+Check out my information about thinking about hexadecimal below if you're not familiar. I also encourage you to find other resources online, since they'll explain it far better than I can and having a solid understanding of hexadecimal values is worth its weight in gold when writing emulators.
+{{< /admonition >}}
+
+The best way to understand is by trying it out; I encourage you to use a lightweight hex editor, such as [HxD](https://mh-nexus.de/en/hxd/) if you're on Windows, to view various ROMs and see what they look like. You'll see something like this:
+
+```
+CE ED 66 66 CC 0D 00 0B 
+03 73 00 83 00 0C 00 0D
+00 08 11 1F 88 89 00 0E 
+DC CC 6E E6 DD DD D9 99
+BB BB 67 63 6E 0E EC CC 
+DD DC 99 9F BB B9 33 3E
+```
+
+These 48 bytes are part of the header on every Gameboy ROM and contain the bitmap image for scrolling Nintendo logo. So, the bytes of these ROMs is the smallest unit of instruction that we'll work with. For 8-bit systems like the CHIP-8 and Gameboy, each byte will correspond to a specific instruction, like `ADD x,y`, where `x` and `y` are two **registers** in the CPU.
+
+### Registers
+
+I was writing the sentence right above this and realized, "shoot I need to include a section explaining what registers are." Registers are small, fast data stores in a processor that act as variables and carry out the operations that the processor is instrucuted to do. The consoles that we write all have different amounts and sizes of registers. The first console, CHIP-8, has 16 general-purpose registers named `V0`-`VF` that each one byte, meaning they have a maximum value of `0xFF`. Note that general-purpose means they can be used for a myriad of calculations. Some consoles will have special registers that are meant for special purposes. The CHIP-8, for example, will have a 16-bit (2 byte) register called the index register, which points to locations in the console's memory.
+
+### The Stack
+
+All consoles have an internal stack -- which is just like the data structure. You can *push* values onto it and *pop* values off of it. This stack is used when calling subroutines, just like your computer does when you call functions in your programs. If you're familiar with recursion, you probably know about the potential of a **stack overflow**, where the stack is full and you try to place a value on top of it. All of the emulators we'll be writing have stacks much smaller than the computer you are reading this with.
 
 {{< admonition info >}}
-More information coming soon!
+You can implement the stack in a couple of ways, including using a stack data structure in whatever language you're working with. What I'll be doing in my implementations is having a simple array with an extra variable called the **stack pointer**, which will keep track of where in the stack we are.
 {{< /admonition >}}
 
 ### The Main Loop
 
+when you turn your Gameboy on, it doesn't turn off until you do so physically. So how do we emulate this functionality? The answer is with something called the **fetch-decode-execute loop**, a 
+
 {{< admonition info >}}
-Coming soon!
+More information coming soon!
 {{< /admonition >}}
 
 ## Tips

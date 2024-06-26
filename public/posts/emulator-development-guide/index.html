@@ -12,7 +12,7 @@
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2024-06-03T00:00:00+00:00">
-    <meta property="article:modified_time" content="2024-06-22T18:43:46-07:00">
+    <meta property="article:modified_time" content="2024-06-23T22:31:04-07:00">
     <meta property="og:image" content="https://srikur.github.io/logo.png">
 
   <meta name="twitter:card" content="summary_large_image">
@@ -34,8 +34,8 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/srikur.github.io\/posts\/emulator-development-guide\/"
-        },"genre": "posts","wordcount":  1770 ,
-        "url": "https:\/\/srikur.github.io\/posts\/emulator-development-guide\/","datePublished": "2024-06-03T00:00:00+00:00","dateModified": "2024-06-22T18:43:46-07:00","publisher": {
+        },"genre": "posts","wordcount":  2378 ,
+        "url": "https:\/\/srikur.github.io\/posts\/emulator-development-guide\/","datePublished": "2024-06-03T00:00:00+00:00","dateModified": "2024-06-23T22:31:04-07:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -76,8 +76,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Emulator Development Guide</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>srikur</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-06-03">2024-06-03</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1770 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;9 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-06-03">2024-06-03</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2378 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;12 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -89,6 +89,8 @@
     <li><a href="#what-exactly-is-an-emulator">What Exactly is an Emulator?</a>
       <ul>
         <li><a href="#roms">ROMs</a></li>
+        <li><a href="#registers">Registers</a></li>
+        <li><a href="#the-stack">The Stack</a></li>
         <li><a href="#the-main-loop">The Main Loop</a></li>
       </ul>
     </li>
@@ -129,24 +131,45 @@
 <blockquote>
 <p>Check out <strong>Visual Boy Advance (VBA)</strong> or <strong>DeSmuME</strong> for examples of popular, well-built emulators. If you&rsquo;re on a mobile device, check out <strong>Delta</strong>. Of course, for each of these you&rsquo;ll have to provide your own ROMs (basically executable dumps of the GBA or DS cartridges in this case), which I believe can only legally be done if you already own the physical versions of the games you want. Google &ldquo;GBA roms&rdquo; or &ldquo;NDS roms&rdquo; to get more information on that.</p>
 </blockquote>
-<p>Since an emulator recreates the entire functionality of a system, we&rsquo;ll have to implement all the components of the system too. For the consoles we&rsquo;ll handle, there might be components like the Central Processing Unit (CPU), Picture Processing Unit (PPU), Audio Processing Unit (APU), and so on. What&rsquo;s nice is that these components provide a sensible template for organizing your code among separate files. Of course, the most important one is the CPU, which</p>
+<p>Since an emulator recreates the entire functionality of a system, we&rsquo;ll have to implement all the components of the system too. For the consoles we&rsquo;ll handle, there might be components like the Central Processing Unit (CPU), Picture Processing Unit (PPU), Audio Processing Unit (APU), and so on. What&rsquo;s nice is that these components provide a sensible template for organizing your code among separate files. Of course, the most important one is the CPU, which handles executing the instructions that are contained in <strong>ROMs</strong> and keeping the system organized.</p>
 <h3 id="roms">ROMs</h3>
-<p>The game cartridges for the NES, Gameboy, and others are physical data that you plug into your consoles. So how are we going to emulate that functionality on a modern computer? The answer is by using <strong>ROMs</strong>, which you can think of as compiled, machine-code binaries that are dumped from those actual physical cartridges. When we read these binary files into our emnulator programs, we  I encourage you to use a lightweight hex editor, such as <a href="https://mh-nexus.de/en/hxd/" target="_blank" rel="noopener noreffer ">HxD</a> if you&rsquo;re on Windows, to view various ROMs and see what</p>
+<p>The game cartridges for the NES, Gameboy, and others are physical data that you plug into your consoles. So how are we going to emulate that functionality on a modern computer? The answer is by using <strong>ROMs</strong>, which you can think of as compiled, machine-code binaries that are dumped from those actual physical cartridges. When we read these binary files into our emulator programs, we will place them in our programs&rsquo; memory (at least for the first few emulators, where the size of the ROMs isn&rsquo;t a limitation on modern hardware). A ROM when viewed as a stream of bytes, contains machine code instructions for the processor of the console &ndash; that&rsquo;s what allows your Gameboy to actually play the game. Those machine code intructions map to processor-specific <strong>assembly language instructions</strong>, the next level of abstraction. These <strong>opcodes</strong> are much easier to work with when you write byte values in hexadecimal. A single unsigned byte in hex ranges from <code>0x00</code> to <code>0xFF</code>, or 0 to 255 in decimal.</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>Tip<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Check out my information about thinking about hexadecimal below if you&rsquo;re not familiar. I also encourage you to find other resources online, since they&rsquo;ll explain it far better than I can and having a solid understanding of hexadecimal values is worth its weight in gold when writing emulators.</div>
+        </div>
+    </div>
+<p>The best way to understand is by trying it out; I encourage you to use a lightweight hex editor, such as <a href="https://mh-nexus.de/en/hxd/" target="_blank" rel="noopener noreffer ">HxD</a> if you&rsquo;re on Windows, to view various ROMs and see what they look like. You&rsquo;ll see something like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">CE ED 66 66 CC 0D 00 0B 
+</span></span><span class="line"><span class="cl">03 73 00 83 00 0C 00 0D
+</span></span><span class="line"><span class="cl">00 08 11 1F 88 89 00 0E 
+</span></span><span class="line"><span class="cl">DC CC 6E E6 DD DD D9 99
+</span></span><span class="line"><span class="cl">BB BB 67 63 6E 0E EC CC 
+</span></span><span class="line"><span class="cl">DD DC 99 9F BB B9 33 3E
+</span></span></code></pre></div><p>These 48 bytes are part of the header on every Gameboy ROM and contain the bitmap image for scrolling Nintendo logo. So, the bytes of these ROMs is the smallest unit of instruction that we&rsquo;ll work with. For 8-bit systems like the CHIP-8 and Gameboy, each byte will correspond to a specific instruction, like <code>ADD x,y</code>, where <code>x</code> and <code>y</code> are two <strong>registers</strong> in the CPU.</p>
+<h3 id="registers">Registers</h3>
+<p>I was writing the sentence right above this and realized, &ldquo;shoot I need to include a section explaining what registers are.&rdquo; Registers are small, fast data stores in a processor that act as variables and carry out the operations that the processor is instrucuted to do. The consoles that we write all have different amounts and sizes of registers. The first console, CHIP-8, has 16 general-purpose registers named <code>V0</code>-<code>VF</code> that each one byte, meaning they have a maximum value of <code>0xFF</code>. Note that general-purpose means they can be used for a myriad of calculations. Some consoles will have special registers that are meant for special purposes. The CHIP-8, for example, will have a 16-bit (2 byte) register called the index register, which points to locations in the console&rsquo;s memory.</p>
+<h3 id="the-stack">The Stack</h3>
+<p>All consoles have an internal stack &ndash; which is just like the data structure. You can <em>push</em> values onto it and <em>pop</em> values off of it. This stack is used when calling subroutines, just like your computer does when you call functions in your programs. If you&rsquo;re familiar with recursion, you probably know about the potential of a <strong>stack overflow</strong>, where the stack is full and you try to place a value on top of it. All of the emulators we&rsquo;ll be writing have stacks much smaller than the computer you are reading this with.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">You can implement the stack in a couple of ways, including using a stack data structure in whatever language you&rsquo;re working with. What I&rsquo;ll be doing in my implementations is having a simple array with an extra variable called the <strong>stack pointer</strong>, which will keep track of where in the stack we are.</div>
+        </div>
+    </div>
+<h3 id="the-main-loop">The Main Loop</h3>
+<p>when you turn your Gameboy on, it doesn&rsquo;t turn off until you do so physically. So how do we emulate this functionality? The answer is with something called the <strong>fetch-decode-execute loop</strong>, a</p>
 <div class="details admonition info open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
         </div>
         <div class="details-content">
             <div class="admonition-content">More information coming soon!</div>
-        </div>
-    </div>
-<h3 id="the-main-loop">The Main Loop</h3>
-<div class="details admonition info open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-info-circle fa-fw" aria-hidden="true"></i>Info<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">Coming soon!</div>
         </div>
     </div>
 <h2 id="tips">Tips</h2>
@@ -280,7 +303,7 @@
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2024-06-22</span>
+                <span>Updated on 2024-06-23</span>
             </div></div>
         <div class="post-info-line">
             <div class="post-info-md"></div>
