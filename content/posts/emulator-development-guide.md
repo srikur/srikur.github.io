@@ -9,7 +9,7 @@ draft: false
 I've recently started my first full-time job that's not an internship or research at a university, so I feel like I've finally gained some baseline credbility to be able to diffuse some of my knowledge back to the community. I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody. My goal is to have easy-to-follow, comprehensive guides for several of the most popular video game consoles from the 1980s, 1990s, and early 2000s. I will provide step-by-step instructions, along with source code in several languages: C++, Java, Python, Rust, OCaml, and Swift. The order below is the order in which we'll build these emulators, starting out with the simple CHIP-8 system. I think you'll find the first project an easy to tackle, but rewarding experience. It will also introduce a lot of the concepts that we'll need for the more "real" video game systems. Emulators 1-5 are solid mid-size projects that you can put on your resume, but if you make it all the way to the Nintendo DS and beyond, you're certainly in the "large, impressive" project category range.
 
 {{< admonition info >}}
-As of 6/22/2024, I'm halfway through writing the first post, about the CHIP-8, and I've written the code for it in 4/6 languages. I'm going to try to finish the Gameboy Color and NES articles by the end of the summer. I'm including this note so I can hold myself accountable for getting it done.
+As of 6/27/2024, I'm halfway through writing the first post, about the CHIP-8, and I've written the code for it in 4/6 languages. I'm going to try to finish the Gameboy Color and NES articles by the end of the summer. I'm including this note so I can hold myself accountable for getting it done.
 {{< /admonition >}}
 
 ## Roadmap
@@ -67,21 +67,17 @@ You can implement the stack in a couple of ways, including using a stack data st
 
 ### The Main Loop
 
-when you turn your Gameboy on, it doesn't turn off until you do so physically. So how do we emulate this functionality? The answer is with something called the **fetch-decode-execute loop**, a 
+When you turn your Gameboy on, it doesn't turn off until you do so physically. So how do we emulate this functionality? The answer is with something called the **fetch-decode-execute loop**, which just means that our program will have a `while` loop running infinitely until we tell it to stop. Inside that loop, we will *fetch* the next instruction at the program counter, *decode* it to find out which instruction we need to call, and *execute* it by calling the necessary function (or however else you implement it). Also inside this loop, we'll keep track of everything else we need to, such as reading when a relevant key has been pressed and redrawing to the screen if necessary.
 
-{{< admonition info >}}
-More information coming soon!
-{{< /admonition >}}
+### Program Counter
+
+The term I just used above, **program counter** (PC) is a variable that refers to where we should execute the next instruction in our emulator. Like the index register, the PC will point to a location in memory. However, this location is where we will read the next byte(s) to be processed as instructions/data.  
 
 ## Tips
 
 ### Graphics Libraries
 
-Since video game consoles draw pixels, sprites, and models to screens, we'll need some way of doing the same thing. Depending on the language you choose, there are a plethora of options available to you, but I'll be using [SDL](https://www.libsdl.org/), [OpenGL](https://www.opengl.org/), and [SpriteKit](https://developer.apple.com/spritekit/), depending on the language and platform I'm building for. You'll likely want to find other online resources to learn more about them, as I'll only be giving you basic setup advice.
-
-{{< admonition info >}}
-More information coming soon!
-{{< /admonition >}}
+Since video game consoles draw pixels, sprites, and models to screens, we'll need some way of doing the same thing. Depending on the language you choose, there are a plethora of options available to you, but I'll be using [SDL](https://www.libsdl.org/), [OpenGL](https://www.opengl.org/), and [SpriteKit](https://developer.apple.com/spritekit/), depending on the language and platform I'm building for. You'll likely want to find other online resources to learn more about them, as I'll only be giving you basic setup advice. Just search online on how to get a basic window up and running first, then find out how to draw to the screen. For the simple emulators, you can find out how to create a texture, write the pixels of the console you're emulating to the texture, and then render the texture to your application's window. I think you'll find that it's probably simpler than you think it is.
 
 ### Bit Manipulation + Bitwise Operations
 
@@ -202,14 +198,14 @@ a =  10110101
 
 ### Bit Masking
 
-{{< admonition info >}}
-Coming soon!
-{{< /admonition >}}
+One neat feature of the logical operator `AND` is that it can be used to extract relevant information from a value. For example, let's say we had the 8-bit value `0xFE`, which corresponds to 254 in decimal. If we were to write this in binary, it would be `11111110`. Now, let's say that we wanted to get the lower four bits of this value, i.e. `1110`. One way we could do that is by `AND`ing the value with `0xF`. THis works because `AND` returns 1 if both values are 1 and 0 otherwise. Since `0xF` is `1111` in binary, or `00001111` written as a whole byte, taking the logical `AND` will return 0 for bits that are not of interest and will return the bits that *are* of interest unchanged. Here's what that looks like in action:
+
+```
+    11111110
+AND 00001111
+=   00001110
+```
 
 ### Hexadecimal
 
-It's worth its weight in gold to become comfortable with hexadecimal representations of numbers, especially with regards to bit masking and setting.
-
-{{< admonition info >}}
-More information coming soon!
-{{< /admonition >}}
+It's worth its weight in gold to become comfortable with hexadecimal representations of numbers, especially with regards to bit masking and setting. Just as binary values can take on either 0 or 1, and decimal values can take on 0 through 9, hexadecimal, which is base 16, can take on values of 0 through 15 for each hex digit. However, since we only want a single character for each value, 10 through 15 are represented as the letters `A` through `F`, where `A` is 10 and `F` is 15. You'll also see the notation convention of beginning hexadecimal values with `0x`. Likewise, if you have binary numbers you can prepend them with `0b` to denote that they are binary values.
