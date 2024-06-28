@@ -1,18 +1,14 @@
 ---
-title: 'Step 0: CHIP-8 Emulator'
+title: 'Project 0: CHIP-8 Emulator'
 date: 2024-06-04
 draft: true
 ---
 
 # Introduction
 
-Our road to becoming qualififed emulator developers begins with the CHIP-8. In the 1970s, Joseph Weisbecker developed CHIP-8 as an interpreted programming language for use on a couple of 8-bit microcomputers. 
+Hopefully you've read the intro this series [here](/posts/emulator-development-guide) and you know have at least a basic idea of what an emulator is about and what the roadmap is. To condense the plan into one sentence, our goal is to emulate the functionality of a game system programmatically by having an endless loop where we fetch low level instructions from ROMs (i.e. game cartridge binary dumps), execute those instructions, and repeat, updating the screen graphics as necessary. This is exactly what the real consoles due at the hardware level.
 
-The reason that we are going to start our emulator development journey by building the CHIP-8 virtual machine is that it will introduce the concepts needed to 
-
-## How Do Emulators Work?
-
-## Extra Resources
+Our road to becoming qualififed emulator developers begins with the CHIP-8. In the 1970s, Joseph Weisbecker developed CHIP-8 as an interpreted programming language for use on a couple of 8-bit microcomputers. The reason that we are going to start our emulator development journey by building the CHIP-8 virtual machine is that it will introduce the concepts needed for the more compicated systems. It's also very feasible to get it running on day one if you dedicate some focused hours to it.
 
 # System Specification
 
@@ -34,62 +30,13 @@ As you now know, the CHIP-8
 
 Alright, we're almost ready to do some programming, but first we need to decide what tools we're going to use. In other words, we need to choose a programming language and graphics library. If you're up for the challenge, I recommend trying something new - I usually try to do each new project in a new programming language. For this tutorial, I'm trying to provide a complete guide, so I'll be detailing code and guidance in six languages: C++, Python, Java, OCaml, Swift, and Rust. If you're not an experienced programmer, I suggest you start in Python, as it'll probably have the lowest learning curve.
 
-## Folder Structure
+## Folder Structure, Graphics, and Implementation
 
-For C++, 
-
-## Graphics
-
-For C++, Rust, and Python, I'll be using SDL to render graphics. You can use [rust-sdl2](https://github.com/Rust-SDL2/rust-sdl2) and [PySDL2](https://pypi.org/project/PySDL2/) for bindings to SDL2 for Rust and Python, respectively. If you'd like, you can use OpenGL, but in my opinion it's harder to use for a simple CHIP-8 interpreter. In later posts about more complicated video game consoles, we'll start using OpenGL.
-
-# Implementation
-
-NOTE: I tend to "think" in terms of C++, so everything I write might have a bias towards that language that may not be perfectly applicable to whatever language you're working with. For the code listings, I'll have the C++ code as the default seen on the page, but every time there's C++ code, I'll also provide listings for the other languages.
+There's a number of graphics libraries you can use to render your emulator, but I recommend using [SDL](https://www.libsdl.org/) if you're developing for Windows and use [SpriteKit](https://developer.apple.com/spritekit/) if you're developing for macOS/iOS. Although SDL is a C library, there are bindings for tons of languages out there. I encourage you to determine what folder and file structure works best for you by yourself, as it'll also help you think about abstractions you can make in your code.
 
 ## The Main Loop
 
-Before we actually implement the architecture we specified above, let's create the skeleton for the main loop that our program will run. This section will also involve the window setup and other graphics needs. The goal here is simply to have our program create a window and have that screen persist until we tell it to close.
 
-
-
-<details>
-
-<summary>Code Listing 1</summary>
-
-### Python
-
-```Python
-import sys
-import sdl2.ext
-
-class Emulator:
-    romPath = ""
-    quit = False
-
-    def __init__(self, path: str):
-        self.romPath = path
-
-    def run(self):
-        print("Running emulator with ROM: " + self.romPath)
-        while not self.quit:
-            events = sdl2.ext.get_events()
-            for event in events:
-                # Check if the event is a quit event or ESC key
-                if event.type == sdl2.SDL_QUIT or (event.type == sdl2.SDL_KEYDOWN and event.key.keysym.sym == sdl2.SDLK_ESCAPE):
-                    self.quit = True
-                    break
-
-sdl2.ext.init()
-window = sdl2.ext.Window("Hello CHIP-8!", size=(800, 600))
-window.show()
-
-processor = Emulator("path/to/rom")
-processor.run()
-```
-
-</details>
-
-If you've set everything up correctly, you should get a black window with the title "Hello CHIP-8!", which you can close using the Escape key or just closing the window normally. 
 
 ## The CPU Class and its Members
 
