@@ -12,19 +12,64 @@ Our road to becoming qualififed emulator developers begins with the CHIP-8. In t
 
 # System Specification
 
+Let's quickly go over the tehcnical aspects of the CHIP-8 system. Check out [this](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM) link for far nore details if you're interested.
+
 ## Memory
 
-As you now know, the CHIP-8 
+The CHIP-8 has 4096 bytes of memory, which is `0xFFF` in hexadecimal. However, CHIP-8 programs dont address their memory before `0x200`, the first 512 bytes. That first half-kilobyte used to be where the interpreter was stored, but we don't need to do anything about that. Instead, we will load the **fonts** (more details below) into that first section and then load the ROM's data starting at `0x200`.
 
 ## Instructions
 
+All CHIP-8 instructions are two bytes, meaning we will read them as is into a 16-bit integer into the **program counter**, with minimum and maximum values of `0x0000` and `0xFFFF`, respectively. However, as you'll see when we get into the actual instructions and their values, the actual domain of possible values is much more limited. 
+
 ## Registers
+
+There are 16 general purpose 8-bit registers called `V0` through `VF` (i.e. `V15`), along with a single 16-bit *index* register. This index register will be used to point to locations in memory, which a program might access for whatever reason it needs. The register `VF` is also referred to as the *flag* register, since it's value been set or not set (i.e. 1 or 0) is used by programs to know when certain conditions are met. You'll understand what I mean by this when we get into the actual implementation of the instructions. 
+
+Of course, there is also the 16-bit **program counter**, which points to a location in the memory from which we should read our next instruction, the subsequent two bytes.
 
 ## Input
 
+The computers than originally ran the CHIP-8 interpreter had 16 keys, from 0-F, arranged like so:
+
+```
++---------+
+| 1 2 3 C |
+| 4 5 6 D |
+| 7 8 9 E |
+| A 0 B F |
++---------+
+```
+
+Since modern computer keyboards have far more keys, you can choose what 16 keys you want to map those to. It should probably be keys that are in a 4x4 grid so it aligns with the layout of the original.
+
 ## Graphics
 
-### Fonts
+The screen size for CHIP08 systems is 64x32 pixels, for a total of 2048, or `0x148`. So, you can have a 2-dimensional array if you want, but you can also simply represent this as a 1-dimensional array and accessing the element at the coordinates (x,y) using `y * 64 + x`. When it comes to rendering, I've opted for the solution of creating a texture from the pixel array, and then rendering the texture. 
+
+## Fonts
+
+The CHIP-8 memory has fifteen preloaded sprites, which are representations of the hexadecimal digits 0-F. Each one is 4 x 5 pixels, so we can represent each as 5 bytes as such:
+| Sprite    | Values |
+| -------- | ------- |
+| 0  | `0x` `0x` `0x` `0x` `0x` |
+| 1 | `0x` `0x` `0x` `0x` `0x` |
+| 2    | `0x` `0x` `0x` `0x` `0x` |
+| 3  | `0x` `0x` `0x` `0x` `0x` |
+| 4 | `0x` `0x` `0x` `0x` `0x` |
+| 5    | `0x` `0x` `0x` `0x` `0x` |
+| 6  | `0x` `0x` `0x` `0x` `0x` |
+| 7 | `0x` `0x` `0x` `0x` `0x` |
+| 8    | `0x` `0x` `0x` `0x` `0x` |
+| 9  | `0x` `0x` `0x` `0x` `0x` |
+| A | `0x` `0x` `0x` `0x` `0x` |
+| B    | `0x` `0x` `0x` `0x` `0x` |
+| C  | `0x` `0x` `0x` `0x` `0x` |
+| D | `0x` `0x` `0x` `0x` `0x` |
+| E    | `0x` `0x` `0x` `0x` `0x` |
+| F    | `0x` `0x` `0x` `0x` `0x` |
+
+You should probably have a static array in your emulator so that you can quickly preload them into the system's memory at runtime.
 
 # Setup
 
@@ -49,28 +94,6 @@ Okay, let's now get into actually building our emulator. As I dicussed in the Sp
 - Sound Timer: 8-bit value that controls the single beeping sound supported by CHIP-8, which is emitted whenever the sound timer is `0x02` or higher, and counts down like the Delay Timer.
 - Registers: These are 8-bit general-purpose registers that do the actual heavy lifting of the computation. They are labeled `V0` through `VF` (15 in hexadecimal), so we can emulate them using a one byte array of length 16.
 - Display: The display for the CHIP-8 is monochrome and is 64 x 32 pixels, which means that every pixel is either `0x00` or `0x01`. We can represent this as a 1-dimensional array. It would make sense for this to be in the `Emulator` class rather than the `CPU` class, but we'll need to modify it using instructions, so this makes life a little easier.
-
-## Fonts
-
-The CHIP-8 memory has fifteen preloaded sprites, which are representations of the hexadecimal digits 0-F. Each one is 4 x 5 pixels, so we can represent each as 5 bytes as such:
-| Sprite    | Values |
-| -------- | ------- |
-| 0  | `0x` `0x` `0x` `0x` `0x` |
-| 1 | `0x` `0x` `0x` `0x` `0x` |
-| 2    | `0x` `0x` `0x` `0x` `0x` |
-| 3  | `0x` `0x` `0x` `0x` `0x` |
-| 4 | `0x` `0x` `0x` `0x` `0x` |
-| 5    | `0x` `0x` `0x` `0x` `0x` |
-| 6  | `0x` `0x` `0x` `0x` `0x` |
-| 7 | `0x` `0x` `0x` `0x` `0x` |
-| 8    | `0x` `0x` `0x` `0x` `0x` |
-| 9  | `0x` `0x` `0x` `0x` `0x` |
-| A | `0x` `0x` `0x` `0x` `0x` |
-| B    | `0x` `0x` `0x` `0x` `0x` |
-| C  | `0x` `0x` `0x` `0x` `0x` |
-| D | `0x` `0x` `0x` `0x` `0x` |
-| E    | `0x` `0x` `0x` `0x` `0x` |
-| F    | `0x` `0x` `0x` `0x` `0x` |
 
 ## The Instruction Set
 
