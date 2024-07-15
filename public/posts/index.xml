@@ -1,23 +1,15 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>All Posts - srikur&#39;s dev page</title>
-        <link>http://localhost:1313/posts/</link>
+        <link>https://srikur.github.io/posts/</link>
         <description>All Posts | srikur&#39;s dev page</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 27 Jun 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="http://localhost:1313/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 27 Jun 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://srikur.github.io/posts/" rel="self" type="application/rss+xml" /><item>
     <title>Emulator Development Guide</title>
-    <link>http://localhost:1313/posts/emulator-development-guide/</link>
+    <link>https://srikur.github.io/posts/emulator-development-guide/</link>
     <pubDate>Thu, 27 Jun 2024 00:00:00 &#43;0000</pubDate>
     <author>srikur</author>
-    <guid>http://localhost:1313/posts/emulator-development-guide/</guid>
+    <guid>https://srikur.github.io/posts/emulator-development-guide/</guid>
     <description><![CDATA[Emulator Development Guide I&rsquo;ve recently started my first full-time job that&rsquo;s not an internship or research at a university, so I feel like I&rsquo;ve finally gained some baseline credbility to be able to diffuse some of my knowledge back to the community. I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody.]]></description>
-</item>
-<item>
-    <title>Project 0: CHIP-8 Emulator</title>
-    <link>http://localhost:1313/posts/chip-8/</link>
-    <pubDate>Tue, 04 Jun 2024 00:00:00 &#43;0000</pubDate>
-    <author>srikur</author>
-    <guid>http://localhost:1313/posts/chip-8/</guid>
-    <description><![CDATA[Introduction Hopefully you&rsquo;ve read the intro this series here and you know have at least a basic idea of what an emulator is about and what the roadmap is. To condense the plan into one sentence, our goal is to emulate the functionality of a game system programmatically by having an endless loop where we fetch low level instructions from ROMs (i.e. game cartridge binary dumps), execute those instructions, and repeat, updating the screen graphics as necessary.]]></description>
 </item>
 </channel>
 </rss>

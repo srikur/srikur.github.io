@@ -1,7 +1,7 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Tags - Tag - srikur&#39;s dev page</title>
-        <link>http://localhost:1313/tags/</link>
+        <link>https://srikur.github.io/tags/</link>
         <description>Tags - Tag - srikur&#39;s dev page</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="http://localhost:1313/tags/" rel="self" type="application/rss+xml" /></channel>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://srikur.github.io/tags/" rel="self" type="application/rss+xml" /></channel>
 </rss>

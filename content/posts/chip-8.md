@@ -73,7 +73,7 @@ You should probably have a static array in your emulator so that you can quickly
 
 # Setup
 
-Alright, we're almost ready to do some programming, but first we need to decide what tools we're going to use. In other words, we need to choose a programming language and graphics library. If you're up for the challenge, I recommend trying something new - I usually try to do each new project in a new programming language. For this tutorial, I'm trying to provide a complete guide, so I'll be detailing code and guidance in six languages: C++, Python, Java, OCaml, Swift, and Rust. If you're not an experienced programmer, I suggest you start in Python, as it'll probably have the lowest learning curve.
+Alright, we're almost ready to do some programming, but first we need to decide what tools we're going to use. In other words, we need to choose a programming language and graphics library. If you're up for the challenge, I recommend trying something new - I usually try to do each new project in a new programming language. For this tutorial, I'm trying to provide a complete guide, so I'll be detailing code and guidance in four languages: C++, Python, Java,and Swift. If you're not an experienced programmer, I suggest you start in Python, as it'll probably have the lowest learning curve.
 
 ## Folder Structure, Graphics, and Implementation
 
@@ -81,7 +81,18 @@ There's a number of graphics libraries you can use to render your emulator, but 
 
 ## The Main Loop
 
+In order to read instructions from ROMs sequentially, we need to have a loop that runs endlessly -- or at least until we tell the program to quit in some way. All you need is a simple loop that will execute the CPU of our emulator (at a specific frame rate), polling keyboard events and drawing updates to the screen if necessary along the way. The basic skeleton looks something like this:
 
+```python
+while not self.quit:
+    # Poll Events
+
+    # Emulate CPU cycle(s)
+
+    # Render the screen
+```
+
+Here, `self.quit` is just a boolean flag for whether or not we should exit the loop and run the cleanup code before ending the program altogether.
 
 ## The CPU Class and its Members
 
@@ -94,6 +105,8 @@ Okay, let's now get into actually building our emulator. As I dicussed in the Sp
 - Sound Timer: 8-bit value that controls the single beeping sound supported by CHIP-8, which is emitted whenever the sound timer is `0x02` or higher, and counts down like the Delay Timer.
 - Registers: These are 8-bit general-purpose registers that do the actual heavy lifting of the computation. They are labeled `V0` through `VF` (15 in hexadecimal), so we can emulate them using a one byte array of length 16.
 - Display: The display for the CHIP-8 is monochrome and is 64 x 32 pixels, which means that every pixel is either `0x00` or `0x01`. We can represent this as a 1-dimensional array. It would make sense for this to be in the `Emulator` class rather than the `CPU` class, but we'll need to modify it using instructions, so this makes life a little easier.
+
+Here's the CPU class definitions. You can ignore any of the variables I haven't explained yet for now. I'll cover them when we get to where they're actually used. 
 
 ## The Instruction Set
 
@@ -197,89 +210,183 @@ case 0x7000:
 
 ### `8XY0` - `8XY7` and `8XYE`
 
-These 
+These are some arithmetic instructions.
 
 ```python
+case 0x8000:
+    match instruction & 0x000F:
+        case 0x0000:
+            # 8XY0: Set register X to the value of register Y
+            self.registers[(instruction & 0x0F00) >> 8] = (self.registers[(instruction & 0x00F0) >> 4])
+        case 0x0001:
+            # 8XY1: Set register X to the value of register X OR register Y
+            self.registers[(instruction & 0x0F00) >> 8] |= (self.registers[(instruction & 0x00F0) >> 4])
+        case 0x0002:
+            # 8XY2: Set register X to the value of register X AND register Y
+            self.registers[(instruction & 0x0F00) >> 8] &= (self.registers[(instruction & 0x00F0) >> 4])
+        case 0x0003:
+            # 8XY3: Set register X to the value of register X XOR register Y
+            self.registers[(instruction & 0x0F00) >> 8] ^= (self.registers[(instruction & 0x00F0) >> 4])
+        case 0x0004:
+            # 8XY4: Add the value of register Y to register X. Set VF to 1 if there is a carry, 0 otherwise
+            self.registers[(instruction & 0x0F00) >> 8] = (self.registers[(instruction & 0x0F00) >> 8] & 0xFF) \
+                                                        + (self.registers[(instruction & 0x00F0) >> 4] & 0xFF)
+            if self.registers[(instruction & 0x0F00) >> 8] > 0xFF:
+                self.registers[0xF] = 1
+            else:
+                self.registers[0xF] = 0
+            self.registers[(instruction & 0x0F00) >> 8] &= 0xFF
+        case 0x0005:
+            # 8XY5: Subtract the value of register Y from register X. Set VF to 0 if there is a borrow, 1 otherwise
+            self.registers[(instruction & 0x0F00) >> 8] = (self.registers[(instruction & 0x0F00) >> 8] & 0xFF) \
+                                                        - (self.registers[(instruction & 0x00F0) >> 4] & 0xFF)
+            if self.registers[(instruction & 0x0F00) >> 8] < 0:
+                self.registers[0xF] = 0
+            else:
+                self.registers[0xF] = 1
+            self.registers[(instruction & 0x0F00) >> 8] &= 0xFF
+        case 0x0006:
+            # 8XY6: Shift the value of register X right by 1. Set VF to the least significant bit of X before the shift
+            last_bit = self.registers[(instruction & 0x0F00) >> 8] & 0xFF & 0x01
+            if self.shift_quirk:
+                self.registers[(instruction & 0x0F00) >> 8] >>= 1
+            else:
+                self.registers[(instruction & 0x0F00) >> 8] = (self.registers[(instruction & 0x00F0) >> 4] & 0xFF) >> 1
+            self.registers[0xF] = last_bit
+        case 0x0007:
+            # 8XY7: Set register X to the value of register Y minus register X. Set VF to 0 if there is a borrow, 1 otherwise
+            self.registers[(instruction & 0x0F00) >> 8] = (self.registers[(instruction & 0x00F0) >> 4] & 0xFF) \
+                                                        - (self.registers[(instruction & 0x0F00) >> 8] & 0xFF)
+            if self.registers[(instruction & 0x0F00) >> 8] < 0:
+                self.registers[0xF] = 0
+            else:
+                self.registers[0xF] = 1
+            self.registers[(instruction & 0x0F00) >> 8] &= 0xFF
+        case 0x000E:
+            # 8XYE: Shift the value of register X left by 1. Set VF to the most significant bit of X before the shift
+            first_bit = (self.registers[(instruction & 0x0F00) >> 8] & 0x80) >> 7
+            if self.shift_quirk:
+                self.registers[(instruction & 0x0F00) >> 8] = ((self.registers[(instruction & 0x0F00) >> 8] & 0xFF) << 1) & 0xFF
+            else:
+                self.registers[(instruction & 0x0F00) >> 8] = ((self.registers[(instruction & 0x00F0) >> 4] & 0xFF) << 1) & 0xFF
+            self.registers[0xF] = first_bit
 ```
 
 ### `9XY0`
 
 ```python
+case 0x9000:
+    # 9XY0: Skip the next instruction if register X does not equal register Y
+    if self.registers[(instruction & 0x0F00) >> 8] != self.registers[(instruction & 0x00F0) >> 4]:
+        self.program_counter += 2
 ```
 
 ### `ANNN`
 
 ```python
+case 0xA000:
+    # ANNN: Set the index register to the address NNN
+    self.index_register = (instruction & 0x0FFF) & 0xFFFF
 ```
 
 ### `BNNN`
 
 ```python
+case 0xB000:
+    # BNNN: Jump to the address NNN plus the value of register 0
+    self.program_counter = (instruction & 0x0FFF) + self.registers[0]
 ```
 
 ### `CXNN`
 
 ```python
+case 0xC000:
+    # CXNN: Set register X to a random number AND NN
+    random.seed()
+    self.registers[(instruction & 0x0F00) >> 8] = random.randint(0, 255) & (instruction & 0x00FF)
 ```
 
 ### `DXYN`
 
 ```python
+case 0xD000:
+    # DXYN: Draw a sprite at coordinate VX, VY using N bytes of sprite data starting at the address stored in the index register
+    # If any set pixels are unset, set VF to 1. Otherwise, set VF to 0
+    self.registers[0xF] = 0
+    x = self.registers[(instruction & 0x0F00) >> 8]
+    y = self.registers[(instruction & 0x00F0) >> 4]
+    for i in range(instruction & 0x000F):
+        sprite_byte = self.memory[self.index_register + i]
+        for j in range(8):
+            pixel = (sprite_byte & (0x80 >> j)) >> (7 - j)
+            if pixel == 1:
+                if self.screen[(x + j + ((y + i) * self.screen_width)) % len(self.screen)] == 1:
+                    self.registers[0xF] = 1
+                self.screen[(x + j + ((y + i) * self.screen_width)) % len(self.screen)] ^= 1
+    self.draw_flag = True
 ```
 
-### `EX9E`
+### `EX9E` and `EXA1`
 
 ```python
+case 0xE000:
+    match instruction & 0x00FF:
+        case 0x009E:
+            # EX9E: Skip the next instruction if the key stored in register X is pressed
+            if self.keys[self.registers[(instruction & 0x0F00) >> 8]] != 0:
+                self.program_counter += 2
+        case 0x00A1:
+            # EXA1: Skip the next instruction if the key stored in register X is not pressed
+            if self.keys[self.registers[(instruction & 0x0F00) >> 8]] == 0:
+                self.program_counter += 2
 ```
 
-### `EXA1`
+### `FX07` - `FX65`
 
 ```python
-```
-
-### `FX07`
-
-```python
-```
-
-### `FX0A`
-
-```python
-```
-
-### `FX15`
-
-```python
-```
-
-### `FX18`
-
-```python
-```
-
-### `FX1E`
-
-```python
-```
-
-### `FX29`
-
-```python
-```
-
-### `FX33`
-
-```python
-```
-
-### `FX55`
-
-```python
-```
-
-### `FX65`
-
-```python
+case 0xF000:
+    match instruction & 0x00FF:
+        case 0x0007:
+            # FX07: Set register X to the value of the delay timer
+            self.registers[(instruction & 0x0F00) >> 8] = self.delay_timer
+        case 0x000A:
+            # FX0A: Wait for a key press and store the result in register X
+            key_pressed = False
+            for i in range(16):
+                if self.keys[i] != 0:
+                    self.registers[(instruction & 0x0F00) >> 8] = i
+                    key_pressed = True
+                    break
+            if not key_pressed:
+                self.program_counter -= 2
+        case 0x0015:
+            # FX15: Set the delay timer to the value of register X
+            self.delay_timer = self.registers[(instruction & 0x0F00) >> 8] & 0xFF
+        case 0x0018:
+            # FX18: Set the sound timer to the value of register X
+            self.sound_timer = self.registers[(instruction & 0x0F00) >> 8] & 0xFF
+        case 0x001E:
+            # FX1E: Add the value of register X to the index register
+            # self.index_register += (self.registers[(instruction & 0x0F00) >> 8])
+            self.index_register = ((self.index_register & 0xFFF) + self.registers[(instruction & 0x0F00) >> 8]) & 0xFFFF
+        case 0x0029:
+            # FX29: Set the index register to the location of the sprite for the character in register X
+            self.index_register = self.registers[(instruction & 0x0F00) >> 8] * 5
+        case 0x0033:
+            # FX33: Store the binary-coded decimal representation of the value of register X at the addresses I, I+1, and I+2
+            self.memory[self.index_register] = self.registers[(instruction & 0x0F00) >> 8] // 100
+            self.memory[self.index_register + 1] = (self.registers[(instruction & 0x0F00) >> 8] // 10) % 10
+            self.memory[self.index_register + 2] = self.registers[(instruction & 0x0F00) >> 8] % 10
+        case 0x0055:
+            # FX55: Store the values of registers V0 to VX in memory starting at address I
+            for i in range(((instruction & 0x0F00) >> 8) + 1):
+                self.memory[(self.index_register + i) & 0xFFFF] = self.registers[i]
+            self.index_register = (self.index_register & 0xFFFF) + ((((instruction & 0x0F00) >> 8) + 1) & 0xFFFF) & 0xFFFF
+        case 0x0065:
+            # FX65: Fill registers V0 to VX with values from memory starting at address I
+            for i in range(((instruction & 0x0F00) >> 8) + 1):
+                self.registers[i] = self.memory[self.index_register + i] & 0xFF
+            self.index_register = (self.index_register & 0xFFFF) + ((((instruction & 0x0F00) >> 8) + 1) & 0xFFFF) & 0xFFFF
 ```
 
 # Concluding Remarks
