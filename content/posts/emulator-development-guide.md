@@ -1,15 +1,15 @@
 ---
 title: 'Emulator Development Guide'
-date: 2024-06-27
+date: 2024-07-24
 draft: false
 ---
 
 # Emulator Development Guide
 
-I've recently started my first full-time job that's not an internship or research at a university, so I feel like I've finally gained some baseline credbility to be able to diffuse some of my knowledge back to the community. I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody. My goal is to have easy-to-follow, comprehensive guides for several of the most popular video game consoles from the 1980s, 1990s, and early 2000s. I will provide step-by-step instructions, along with source code in several languages: C++, Java, Python, Rust, OCaml, and Swift. The order below is the order in which we'll build these emulators, starting out with the simple CHIP-8 system. I think you'll find the first project an easy to tackle, but rewarding experience. It will also introduce a lot of the concepts that we'll need for the more "real" video game systems. Emulators 1-5 are solid mid-size projects that you can put on your resume, but if you make it all the way to the Nintendo DS and beyond, you're certainly in the "large, impressive" project category range.
+I've recently started my first full-time job that's not an internship or research at a university, so I feel like I've finally gained some baseline credbility to be able to diffuse some of my knowledge back to the community. I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody. My goal is to have easy-to-follow, comprehensive guides for several of the most popular video game consoles from the 1980s, 1990s, and early 2000s. I will provide step-by-step instructions, along with source code in several languages: C++, Java, Python, and Swift. The order below is the order in which we'll build these emulators, starting out with the simple CHIP-8 system. I think you'll find the first project an easy to tackle, but rewarding experience. It will also introduce a lot of the concepts that we'll need for the more "real" video game systems. Emulators 1-5 are solid mid-size projects that you can put on your resume, but if you make it all the way to the Nintendo DS and beyond, you're certainly in the "large, impressive" project category range.
 
 {{< admonition info >}}
-As of 6/27/2024, I'm halfway through writing the first post, about the CHIP-8, and I've written the code for it in 4/6 languages. I'm going to try to finish the Gameboy Color and NES articles by the end of the summer. I'm including this note so I can hold myself accountable for getting it done.
+As of 7/24/2024, I'm halfway through writing the first post, about the CHIP-8, and I've written the code for it in the four languages. I'm going to try to finish the Gameboy Color and NES articles by the end of the summer. I'm including this note so I can hold myself accountable for getting it done.
 {{< /admonition >}}
 
 ## Roadmap
@@ -85,7 +85,7 @@ By the time you're done with a couple emulators, you'll be an expert in bit mani
 
 >Note the difference between *unsigned* and *signed* values! The language you're working with will likely have separate data types of the two, but it may not, or they may not be convenient to use, in which case you'll have to be even more careful. As the name suggests, *signed* integers have a sign --- that is, they can have negative values --- whereas *unsigned* integers do not. For example, a *signed* 8-bit (i.e. one byte) integer can contain values from -127 to 128, while an *unsigned* 8-bit integer can hold values from 0 to 255.
 
-There are a few operations that we can do "bitwise", meaning bit-by-bit, and every programming language has support for these operators, although the syntax will vary. For the six languages we'll be using, here are the bitwise operators:
+There are a few operations that we can do "bitwise", meaning bit-by-bit, and every programming language has support for these operators, although the syntax will vary. For the four languages we'll be using, here are the bitwise operators:
 
 | Language | Operators |
 | ----------- | ----------- |
@@ -93,10 +93,8 @@ There are a few operations that we can do "bitwise", meaning bit-by-bit, and eve
 | Python | `&`, <code>&#124;</code>, `^`, `>>`, `<<`, `!` |
 | Java | `&`, <code>&#124;</code>, `^`, `>>`, `<<`, `!` |
 | Swift | `&`, <code>&#124;</code>, `^`, `>>`, `<<`, `!` |
-| OCaml | `land`, `lor`, `lxor`, `lsr`, `lsl`, `lnot` |
-| Rust | `&`, <code>&#124;</code>, `^`, `>>`, `<<`, `!` |
 
-You'll notice that OCaml is the only language of the six that has a different syntax for the operators.
+You'll notice that all four languages use the same syntax for the bitwise operators!
 
 {{< admonition warning >}}
 A common source of bugs when writing emulators is the differences in operator precedence across languages. For example, in C++ the `>>` operator has higher precedence than the `&` operator, so if you have an expression like `a & b >> 8` (which you'll see a lot of very soon in the CHIP-8 guide), the value of `b` is shifted right by 8 **BEFORE** it is logically `AND`ed wth `a`. In fact, when we get to the CHIP-8 stuff, you'll see that what we usually want is `(a & b) >> 8`. Note that not all of the languages have the same precedence you expect, and it can be a frustrating problem to debug in complicated expressions.

@@ -1,8 +1,12 @@
 ---
 title: 'Project 0: CHIP-8 Emulator'
-date: 2024-06-04
-draft: true
+date: 2024-07-24
+draft: false
 ---
+
+{{< admonition info >}}
+This article is still in progress.
+{{< /admonition >}}
 
 # Introduction
 
@@ -149,6 +153,8 @@ case 0x0000:
 
 ### `1NNN`
 
+This instruction "jumps" to value located at the memory location `NNN`. Remember, the logical `AND` will return 0 if either of the bits being compared is zero. What we're doing here is using the value `0x0FFF` to *mask* the lower 12 bits of the instruction's value. Since leading zeroes don't matter in binary, this leaves with just `NNN`. Also note that the only thing we need to do to make this jump is set the program counter, since that is what loads the subsequent instruction to be executed.
+
 ```python
 case 0x1000:
     # 1NNN: Jump to address NNN
@@ -156,6 +162,8 @@ case 0x1000:
 ```
 
 ### `2NNN`
+
+Like the previous `1NNN`, this instruction sets the PC to the lower 12 bits of the instruction. However, since its purpose is to call a subroutine, we need to push the pre-call instruction location onto the stack. This will allow us to *pop* the value off the stack when its time to return from the subroutine. You don't really need to worry about the stack pointer overflowing if you've correctly implement all the instructions. In fact, if your program crashes due to trying to access an index beyond the size of the stack, you'll know that either this instruction or some other one is incorrect.
 
 ```python
 case 0x2000:
@@ -167,6 +175,16 @@ case 0x2000:
 
 ### `3XNN`
 
+`3XNN` is the first instruction that's a little different. It skips the next instruction if `X` does not equal `NN`. Let's break down both sides of the `if` statement, since their structure will come up in practically every instruction from here on out. 
+
+On the left hand side we have `self.registers[(instruction & 0x0F00) >> 8]`. Here what we're doing is using a bitmask `AND` to get the second nibble from the instruction, giving us `X00`. Then we right shift it by 8 bits -- what this does is essentially discard the lowest two nibbles of `X00` and gets it to just `X` (remember the leading zeroes don't count, only the trailing ones do). Now, we can index the registers array, since we want to compare the value of register `X` to `NN`.
+
+As you now know, to do that we take `instruction & 0x00FF`, which gives us just the lower byte of the instruction, and compare it to the left hand side.
+
+{{< admonition info >}}
+Remember that we increment the program counter by 2 in the fetch-decode-execute loop. This means that skipping an instruction involves adding another 2 to the PC.
+{{< /admonition >}}
+
 ```python
 case 0x3000:
     # 3XNN: Skip the next instruction if register X equals NN
@@ -175,6 +193,8 @@ case 0x3000:
 ```
 
 ### `4XNN`
+
+This is pretty much the same as the previous instruction, but remember to use `!=` instead of `==`.
 
 ```python
 case 0x4000:
@@ -185,6 +205,8 @@ case 0x4000:
 
 ### `5XY0`
 
+Like the previous two instructions, we are adding additional amounts to the PC if a certain condition is met. However, this time we're comparing the values of two registers. Register `X` we obtain like before, by using a bitmask and then shifting the value 8 bits to the right. For register `Y`, we do the same, but using `0x00F0` and shifting right by 4 bits instead, as the location of `Y` in the instruction is one nibble to the right.
+
 ```python
 case 0x5000:
     # 5XY0: Skip the next instruction if register X equals register Y
@@ -194,6 +216,8 @@ case 0x5000:
 
 ### `6XNN`
 
+You should have no problem interpreting this one now. We are simply setting the value of the register at `X` to be `NN`, extracting those two values in the standard way.
+
 ```python
 case 0x6000:
     # 6XNN: Set register X to NN
@@ -201,6 +225,8 @@ case 0x6000:
 ```
 
 ### `7XNN`
+
+The same as `6XNN`, but we are adding the value of `NN` to the previous value contained in register `X`.
 
 ```python
 case 0x7000:
