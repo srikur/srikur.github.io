@@ -11,8 +11,8 @@
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2024-07-24T00:00:00+00:00">
-    <meta property="article:modified_time" content="2024-07-14T17:54:14-07:00">
+    <meta property="article:published_time" content="2024-07-25T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-07-24T23:25:07-07:00">
     <meta property="og:image" content="https://srikur.github.io/logo.png">
 
   <meta name="twitter:card" content="summary_large_image">
@@ -23,7 +23,7 @@
 <meta name="application-name" content="My cool site">
 <meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://srikur.github.io/posts/chip-8/" /><link rel="next" href="https://srikur.github.io/posts/emulator-development-guide/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://srikur.github.io/posts/chip-8/" /><link rel="prev" href="https://srikur.github.io/posts/emulator-development-guide/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
@@ -34,8 +34,8 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/srikur.github.io\/posts\/chip-8\/"
-        },"genre": "posts","wordcount":  3635 ,
-        "url": "https:\/\/srikur.github.io\/posts\/chip-8\/","datePublished": "2024-07-24T00:00:00+00:00","dateModified": "2024-07-14T17:54:14-07:00","publisher": {
+        },"genre": "posts","wordcount":  4004 ,
+        "url": "https:\/\/srikur.github.io\/posts\/chip-8\/","datePublished": "2024-07-25T00:00:00+00:00","dateModified": "2024-07-24T23:25:07-07:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -76,8 +76,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Project 0: CHIP-8 Emulator</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>srikur</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-07-24">2024-07-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;3635 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;18 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-07-25">2024-07-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;4004 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;19 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -97,6 +97,7 @@
     <li><a href="#folder-structure-graphics-and-implementation">Folder Structure, Graphics, and Implementation</a></li>
     <li><a href="#the-main-loop">The Main Loop</a></li>
     <li><a href="#the-cpu-class-and-its-members">The CPU Class and its Members</a></li>
+    <li><a href="#starting-out">Starting Out</a></li>
     <li><a href="#the-instruction-set">The Instruction Set</a>
       <ul>
         <li><a href="#0nnn"><code>0NNN</code></a></li>
@@ -118,6 +119,8 @@
         <li><a href="#fx07---fx65"><code>FX07</code> - <code>FX65</code></a></li>
       </ul>
     </li>
+    <li><a href="#super-chip-additions">SUPER-CHIP Additions</a></li>
+    <li><a href="#xo-chip-additions">XO-CHIP Additions</a></li>
   </ul>
 </nav></div>
             </div><div class="content" id="content"><div class="details admonition info open">
@@ -254,6 +257,16 @@
 <li>Display: The display for the CHIP-8 is monochrome and is 64 x 32 pixels, which means that every pixel is either <code>0x00</code> or <code>0x01</code>. We can represent this as a 1-dimensional array. It would make sense for this to be in the <code>Emulator</code> class rather than the <code>CPU</code> class, but we&rsquo;ll need to modify it using instructions, so this makes life a little easier.</li>
 </ul>
 <p>Here&rsquo;s the CPU class definitions. You can ignore any of the variables I haven&rsquo;t explained yet for now. I&rsquo;ll cover them when we get to where they&rsquo;re actually used.</p>
+<h2 id="starting-out">Starting Out</h2>
+<p>The section after this has descriptions and code for the complete instruction set, but rather than try to do them all in one go, you should start off with the following five:</p>
+<ul>
+<li><code>00E0</code> (clearing the screen)</li>
+<li><code>1NNN</code> (jumping to address <code>NNN</code>)</li>
+<li><code>6XNN</code> (set register <code>X</code> to value <code>NN</code>)</li>
+<li><code>ANNN</code> (set index register to value <code>NNN</code>)</li>
+<li><code>DXYN</code> (draw a sprite at (<code>X</code>,<code>Y</code>))</li>
+</ul>
+<p>These five are used in Timendus&rsquo; CHIP-8 splash screen logo test ROM. You can find that one along with a bunch of other test ROMs <a href="https://github.com/Timendus/chip8-test-suite" target="_blank" rel="noopener noreffer ">here</a>. As noted in that GitHub repo, the original IBM test logo requires an additional instruction, <code>7XNN</code>. After those two work properly, you can start using the test ROMs that test a lot more functionality.</p>
 <h2 id="the-instruction-set">The Instruction Set</h2>
 <p>All the setup is finally done, and we&rsquo;re ready to actually create the logic behind the emulator. As you know, the CHIP-8 ROMs are being read in as bytes, and each instruction is 2 bytes long. Each instruction does specific tasks with the registers, display, or program counter, so one way to write that functionality is to have a <code>switch</code> statement (or your language&rsquo;s equivalent) that decodes the instruction and executes the relevant code. Another, fancier way is to use function pointers with some logic like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cm">/* Fetch opcode */</span>
@@ -330,12 +343,12 @@
 </span></span><span class="line"><span class="cl">    <span class="c1"># 7XNN: Add NN to register X</span>
 </span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">]</span> <span class="o">+=</span> <span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span>
 </span></span></code></pre></div><h3 id="8xy0---8xy7-and-8xye"><code>8XY0</code> - <code>8XY7</code> and <code>8XYE</code></h3>
-<p>These are some arithmetic instructions.</p>
+<p>These are some arithmetic instructions. Note that in the Python code for some of the intermediate calculations, we need to include <code>&amp; 0xFF</code> before using them. The reason is because we&rsquo;re simulating 8-bit or 16-bit unsigned integers using the regular signed integer datatype that Python has, so we run the risk of not properly overflowing those integer values as they would in a regular 8-bit unsigned value. To fix that, we simply take the lowest byte of the integer before doing any further calculations with a value. If you&rsquo;re using a language that has built in unsigned bytes, like <code>uint8_t</code> in C/C++, you don&rsquo;t need to worry about that.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">case</span> <span class="mh">0x8000</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="k">match</span> <span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x000F</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="mh">0x0000</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">            <span class="c1"># 8XY0: Set register X to the value of register Y</span>
-</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x00F0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x00F0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">]</span>
 </span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="mh">0x0001</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">            <span class="c1"># 8XY1: Set register X to the value of register X OR register Y</span>
 </span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">]</span> <span class="o">|=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x00F0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">])</span>
@@ -388,7 +401,8 @@
 </span></span><span class="line"><span class="cl">            <span class="k">else</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x00F0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
 </span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[</span><span class="mh">0xF</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_bit</span>
-</span></span></code></pre></div><h3 id="9xy0"><code>9XY0</code></h3>
+</span></span></code></pre></div><p>The next few instructions are pretty self-explanatory and use the same ideas we&rsquo;ve already seen.</p>
+<h3 id="9xy0"><code>9XY0</code></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">case</span> <span class="mh">0x9000</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="c1"># 9XY0: Skip the next instruction if register X does not equal register Y</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x00F0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">]:</span>
@@ -396,7 +410,7 @@
 </span></span></code></pre></div><h3 id="annn"><code>ANNN</code></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">case</span> <span class="mh">0xA000</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="c1"># ANNN: Set the index register to the address NNN</span>
-</span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="o">.</span><span class="n">index_register</span> <span class="o">=</span> <span class="p">(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0FFF</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
+</span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="o">.</span><span class="n">index_register</span> <span class="o">=</span> <span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0FFF</span>
 </span></span></code></pre></div><h3 id="bnnn"><code>BNNN</code></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">case</span> <span class="mh">0xB000</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="c1"># BNNN: Jump to the address NNN plus the value of register 0</span>
@@ -406,7 +420,9 @@
 </span></span><span class="line"><span class="cl">    <span class="c1"># CXNN: Set register X to a random number AND NN</span>
 </span></span><span class="line"><span class="cl">    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span><span class="p">)</span>
-</span></span></code></pre></div><h3 id="dxyn"><code>DXYN</code></h3>
+</span></span></code></pre></div><p>Alright, here is the instruction that actually draws to the screen, and it&rsquo;s by far the most complicated instruction to implement. Getting this to run properly will also allow you to start using test ROMs, so you can check if you&rsquo;ve handled all the quirks of the system properly.</p>
+<p>What <code>DXYN</code> does is draw a sprite at the point with x-coordinate determined by the value of register <code>X</code>, and y-coordinate determined by the value of register <code>Y</code>. To do so, we use <code>N</code> bytes of sprite data from the location pointed to by the index pointer.</p>
+<h3 id="dxyn"><code>DXYN</code></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">case</span> <span class="mh">0xD000</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="c1"># DXYN: Draw a sprite at coordinate VX, VY using N bytes of sprite data starting at the address stored in the index register</span>
 </span></span><span class="line"><span class="cl">    <span class="c1"># If any set pixels are unset, set VF to 1. Otherwise, set VF to 0</span>
@@ -422,7 +438,8 @@
 </span></span><span class="line"><span class="cl">                    <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[</span><span class="mh">0xF</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 </span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">[(</span><span class="n">x</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="p">((</span><span class="n">y</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">))</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)]</span> <span class="o">^=</span> <span class="mi">1</span>
 </span></span><span class="line"><span class="cl">    <span class="bp">self</span><span class="o">.</span><span class="n">draw_flag</span> <span class="o">=</span> <span class="kc">True</span>
-</span></span></code></pre></div><h3 id="ex9e-and-exa1"><code>EX9E</code> and <code>EXA1</code></h3>
+</span></span></code></pre></div><p>For these two instructions, we access the <code>keys</code> array that holds whether any of the 16 keys have been pressed in this frame. You should check (i.e. poll) these events every frame in your main program loop.</p>
+<h3 id="ex9e-and-exa1"><code>EX9E</code> and <code>EXA1</code></h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">case</span> <span class="mh">0xE000</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="k">match</span> <span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="mh">0x009E</span><span class="p">:</span>
@@ -457,7 +474,6 @@
 </span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">sound_timer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
 </span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="mh">0x001E</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">            <span class="c1"># FX1E: Add the value of register X to the index register</span>
-</span></span><span class="line"><span class="cl">            <span class="c1"># self.index_register += (self.registers[(instruction &amp; 0x0F00) &gt;&gt; 8])</span>
 </span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">index_register</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">index_register</span> <span class="o">&amp;</span> <span class="mh">0xFFF</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[(</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
 </span></span><span class="line"><span class="cl">        <span class="k">case</span> <span class="mh">0x0029</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">            <span class="c1"># FX29: Set the index register to the location of the sprite for the character in register X</span>
@@ -477,12 +493,14 @@
 </span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(((</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">registers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index_register</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
 </span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">index_register</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index_register</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span> <span class="o">+</span> <span class="p">((((</span><span class="n">instruction</span> <span class="o">&amp;</span> <span class="mh">0x0F00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
-</span></span></code></pre></div><h1 id="concluding-remarks">Concluding Remarks</h1>
+</span></span></code></pre></div><h2 id="super-chip-additions">SUPER-CHIP Additions</h2>
+<h2 id="xo-chip-additions">XO-CHIP Additions</h2>
+<h1 id="concluding-remarks">Concluding Remarks</h1>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2024-07-14</span>
+                <span>Updated on 2024-07-24</span>
             </div></div>
         <div class="post-info-line">
             <div class="post-info-md"></div>
@@ -499,8 +517,7 @@
         </section>
     </div>
 
-    <div class="post-nav">
-            <a href="/posts/emulator-development-guide/" class="next" rel="next" title="Emulator Development Guide">Emulator Development Guide<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+    <div class="post-nav"><a href="/posts/emulator-development-guide/" class="prev" rel="prev" title="Emulator Development Guide"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Emulator Development Guide</a></div>
 </div>
 </article></div>
             </main><footer class="footer">

@@ -1,6 +1,6 @@
 ---
 title: 'Project 0: CHIP-8 Emulator'
-date: 2024-07-24
+date: 2024-07-25
 draft: false
 ---
 
@@ -111,6 +111,17 @@ Okay, let's now get into actually building our emulator. As I dicussed in the Sp
 - Display: The display for the CHIP-8 is monochrome and is 64 x 32 pixels, which means that every pixel is either `0x00` or `0x01`. We can represent this as a 1-dimensional array. It would make sense for this to be in the `Emulator` class rather than the `CPU` class, but we'll need to modify it using instructions, so this makes life a little easier.
 
 Here's the CPU class definitions. You can ignore any of the variables I haven't explained yet for now. I'll cover them when we get to where they're actually used. 
+
+## Starting Out
+
+The section after this has descriptions and code for the complete instruction set, but rather than try to do them all in one go, you should start off with the following five: 
+- `00E0` (clearing the screen)
+- `1NNN` (jumping to address `NNN`)
+- `6XNN` (set register `X` to value `NN`)
+- `ANNN` (set index register to value `NNN`)
+- `DXYN` (draw a sprite at (`X`,`Y`))
+
+These five are used in Timendus' CHIP-8 splash screen logo test ROM. You can find that one along with a bunch of other test ROMs [here](https://github.com/Timendus/chip8-test-suite). As noted in that GitHub repo, the original IBM test logo requires an additional instruction, `7XNN`. After those two work properly, you can start using the test ROMs that test a lot more functionality.
 
 ## The Instruction Set
 
@@ -236,14 +247,14 @@ case 0x7000:
 
 ### `8XY0` - `8XY7` and `8XYE`
 
-These are some arithmetic instructions.
+These are some arithmetic instructions. Note that in the Python code for some of the intermediate calculations, we need to include `& 0xFF` before using them. The reason is because we're simulating 8-bit or 16-bit unsigned integers using the regular signed integer datatype that Python has, so we run the risk of not properly overflowing those integer values as they would in a regular 8-bit unsigned value. To fix that, we simply take the lowest byte of the integer before doing any further calculations with a value. If you're using a language that has built in unsigned bytes, like `uint8_t` in C/C++, you don't need to worry about that.
 
 ```python
 case 0x8000:
     match instruction & 0x000F:
         case 0x0000:
             # 8XY0: Set register X to the value of register Y
-            self.registers[(instruction & 0x0F00) >> 8] = (self.registers[(instruction & 0x00F0) >> 4])
+            self.registers[(instruction & 0x0F00) >> 8] = self.registers[(instruction & 0x00F0) >> 4]
         case 0x0001:
             # 8XY1: Set register X to the value of register X OR register Y
             self.registers[(instruction & 0x0F00) >> 8] |= (self.registers[(instruction & 0x00F0) >> 4])
@@ -298,6 +309,8 @@ case 0x8000:
             self.registers[0xF] = first_bit
 ```
 
+The next few instructions are pretty self-explanatory and use the same ideas we've already seen.
+
 ### `9XY0`
 
 ```python
@@ -312,7 +325,7 @@ case 0x9000:
 ```python
 case 0xA000:
     # ANNN: Set the index register to the address NNN
-    self.index_register = (instruction & 0x0FFF) & 0xFFFF
+    self.index_register = instruction & 0x0FFF
 ```
 
 ### `BNNN`
@@ -331,6 +344,12 @@ case 0xC000:
     random.seed()
     self.registers[(instruction & 0x0F00) >> 8] = random.randint(0, 255) & (instruction & 0x00FF)
 ```
+
+Alright, here is the instruction that actually draws to the screen, and it's by far the most complicated instruction to implement. Getting this to run properly will also allow you to start using test ROMs, so you can check if you've handled all the quirks of the system properly.
+
+What `DXYN` does is draw a sprite at the point with x-coordinate determined by the value of register `X`, and y-coordinate determined by the value of register `Y`. To do so, we use `N` bytes of sprite data from the location pointed to by the index pointer.
+
+
 
 ### `DXYN`
 
@@ -351,6 +370,8 @@ case 0xD000:
                 self.screen[(x + j + ((y + i) * self.screen_width)) % len(self.screen)] ^= 1
     self.draw_flag = True
 ```
+
+For these two instructions, we access the `keys` array that holds whether any of the 16 keys have been pressed in this frame. You should check (i.e. poll) these events every frame in your main program loop.
 
 ### `EX9E` and `EXA1`
 
@@ -393,7 +414,6 @@ case 0xF000:
             self.sound_timer = self.registers[(instruction & 0x0F00) >> 8] & 0xFF
         case 0x001E:
             # FX1E: Add the value of register X to the index register
-            # self.index_register += (self.registers[(instruction & 0x0F00) >> 8])
             self.index_register = ((self.index_register & 0xFFF) + self.registers[(instruction & 0x0F00) >> 8]) & 0xFFFF
         case 0x0029:
             # FX29: Set the index register to the location of the sprite for the character in register X
@@ -414,5 +434,9 @@ case 0xF000:
                 self.registers[i] = self.memory[self.index_register + i] & 0xFF
             self.index_register = (self.index_register & 0xFFFF) + ((((instruction & 0x0F00) >> 8) + 1) & 0xFFFF) & 0xFFFF
 ```
+
+## SUPER-CHIP Additions
+
+## XO-CHIP Additions
 
 # Concluding Remarks
