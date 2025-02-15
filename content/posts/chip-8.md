@@ -1,5 +1,5 @@
 ---
-title: 'Project 0: CHIP-8 Emulator'
+title: 'CHIP-8 Emulator'
 date: 2024-07-25
 draft: false
 ---
@@ -437,6 +437,29 @@ case 0xF000:
 
 ## SUPER-CHIP Additions
 
+The SUPER-CHIP, an extension of the original CHIP-8, introduced several new features and instructions. Here are some of the key additions:
+
+1. Higher Resolution: SUPER-CHIP added a high-resolution mode of 128x64 pixels, in addition to the original 64x32 mode.
+
+2. Scrolling: New instructions were added to scroll the display in different directions.
+
+3. Extended Sprite Drawing: SUPER-CHIP allowed for 16x16 pixel sprites in addition to the original 8x8 sprites.
+
+4. New Instructions:
+   - 00CN: Scroll display N pixels down
+   - 00FB: Scroll display 4 pixels right
+   - 00FC: Scroll display 4 pixels left
+   - 00FD: Exit CHIP-8 interpreter
+   - 00FE: Disable high-resolution mode
+   - 00FF: Enable high-resolution mode
+   - DXY0: Draw 16x16 sprite
+   - FX75: Store V0..VX in RPL user flags (X <= 7)
+   - FX85: Read V0..VX from RPL user flags (X <= 7)
+
+These additions expanded the capabilities of CHIP-8, allowing for more complex graphics and interactions in SUPER-CHIP programs.
+
+
 ## XO-CHIP Additions
 
 # Concluding Remarks
+

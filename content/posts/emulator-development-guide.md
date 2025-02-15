@@ -6,21 +6,17 @@ draft: false
 
 # Emulator Development Guide
 
-I've recently started my first full-time job that's not an internship or research at a university, so I feel like I've finally gained some baseline credbility to be able to diffuse some of my knowledge back to the community. I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody. My goal is to have easy-to-follow, comprehensive guides for several of the most popular video game consoles from the 1980s, 1990s, and early 2000s. I will provide step-by-step instructions, along with source code in several languages: C++, Java, Python, and Swift. The order below is the order in which we'll build these emulators, starting out with the simple CHIP-8 system. I think you'll find the first project an easy to tackle, but rewarding experience. It will also introduce a lot of the concepts that we'll need for the more "real" video game systems. Emulators 1-5 are solid mid-size projects that you can put on your resume, but if you make it all the way to the Nintendo DS and beyond, you're certainly in the "large, impressive" project category range.
-
-{{< admonition info >}}
-As of 7/24/2024, I'm halfway through writing the first post, about the CHIP-8, and I've written the code for it in the four languages. I'm going to try to finish the Gameboy Color and NES articles by the end of the summer. I'm including this note so I can hold myself accountable for getting it done.
-{{< /admonition >}}
+I was introduced to emulation at a young age by an older sibling, and I had a dream at age 5 to build a Gameboy emulator myself. I fulfilled that a few years ago, but I learned a lot along the way and I want to try and present things as I understand them in case it helps anybody. My goal is to have easy-to-follow, comprehensive guides for several of the most popular video game consoles from the 1980s, 1990s, and early 2000s. I will provide step-by-step instructions, along with source code in several languages: C++, Java, Python, and Swift. The order below is the order in which we'll build these emulators, starting out with the simple CHIP-8 system. I think you'll find the first project an easy to tackle, but rewarding experience. It will also introduce a lot of the concepts that we'll need for the more "real" video game systems. Emulators 1-5 are solid mid-size projects that you can put on your resume, but if you make it all the way to the Nintendo DS and beyond, in my opinion you're certainly in the "large, impressive" project category range.
 
 ## Roadmap
-1. [Crawling: CHIP-8](/posts/chip-8/)
-2. [First Steps: Gameboy / Gameboy Color](/posts/gameboy-color)
-3. [Walking: NES](/posts/nintendo-entertainment-system)
-4. [Running: SNES](/posts/super-nes)
-5. [Biking: Gameboy Advanced](/posts/gameboy-advanced)
-6. [Driving: Nintendo DS](/posts/nintendo-ds)
-7. [Flying: Nintendo 64](/posts/nintendo-64)
-8. [Teleporting: PlayStation 1](/posts/playstation-one)
+1. [CHIP-8](/posts/chip-8/)
+2. [Gameboy / Gameboy Color](/posts/gameboy-color)
+3. [NES](/posts/nintendo-entertainment-system)
+4. [SNES](/posts/super-nes)
+5. [Gameboy Advanced](/posts/gameboy-advanced)
+6. [Nintendo DS](/posts/nintendo-ds)
+7. [Nintendo 64](/posts/nintendo-64)
+8. [PlayStation 1](/posts/playstation-one)
 
 I plan on having every line of code for each system in all the languages available on GitHub and all of the code related to logic in the posts, but I highly encourage you to take a first pass at the components without looking at the code. Only consult my code (or any other emulator's code) once you've tried debugging but are stuck. Hopefully, you're reading this because you're looking for a very challenging, but also extremely rewarding programming project. You'll find that writing emulators ticks both those boxes, with the bonus of the satisfaction of playing classic games on software you've built yourself.
 
