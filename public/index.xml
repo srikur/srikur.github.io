@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>srikur&#39;s dev page</title>
+    <link>https://srikur.github.io/</link>
+    <description>Recent content on srikur&#39;s dev page</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 25 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://srikur.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to: Write a Basic CHIP-8 Emulator</title>
+      <link>https://srikur.github.io/posts/chip-8/</link>
+      <pubDate>Thu, 25 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>https://srikur.github.io/posts/chip-8/</guid>
+      <description>&lt;p&gt;NOTE: Unfinished&lt;/p&gt;&#xA;&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;To condense the plan into one sentence, our goal is to emulate the functionality of a game system programmatically by having an endless loop where we fetch low level instructions from ROMs (i.e. game cartridge binary dumps), execute those instructions, and repeat, updating the screen graphics as necessary. This is exactly what the real consoles due at the hardware level.&lt;/p&gt;&#xA;&lt;p&gt;Our road to becoming qualififed emulator developers begins with the CHIP-8. In the 1970s, Joseph Weisbecker developed CHIP-8 as an interpreted programming language for use on a couple of 8-bit microcomputers. The reason that we are going to start our emulator development journey by building the CHIP-8 virtual machine is that it will introduce the concepts needed for the more compicated systems. It&amp;rsquo;s also very feasible to get it running on day one if you dedicate some focused hours to it.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
