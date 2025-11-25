@@ -8,9 +8,13 @@ NOTE: Unfinished
 
 # Introduction
 
-To condense the plan into one sentence, our goal is to emulate the functionality of a game system programmatically by having an endless loop where we fetch low level instructions from ROMs (i.e. game cartridge binary dumps), execute those instructions, and repeat, updating the screen graphics as necessary. This is exactly what the real consoles due at the hardware level.
+If you've ever played console games on your phone or laptop, you're familiar with what an emulator is. They're called that because they *emulate* the functionality of that computer architecture on another system. Emulation means that we're making the host system *behave* like the guest system, so that we can run software designed for the guest system, like games, on the host. If building your own versions of those sound exciting to you, then this project will help you get a good glimpse of what's necessary to develop an emulator in a somewhat contrived scenario.
 
-Our road to becoming qualififed emulator developers begins with the CHIP-8. In the 1970s, Joseph Weisbecker developed CHIP-8 as an interpreted programming language for use on a couple of 8-bit microcomputers. The reason that we are going to start our emulator development journey by building the CHIP-8 virtual machine is that it will introduce the concepts needed for the more compicated systems. It's also very feasible to get it running on day one if you dedicate some focused hours to it.
+Our road to becoming qualififed emulator developers begins with the CHIP-8. In the 1970s, Joseph Weisbecker developed CHIP-8 as an interpreted programming language for use on a couple of 8-bit microcomputers. We're starting our emulator development journey by building the CHIP-8 virtual machine since it will introduce the concepts needed for the more compicated systems, while still being a short project---it's very feasible to get it running on day one if you dedicate some focused hours to it.
+
+In this tutorial we're going to be writing the emulator in Python, mainly for ease of syntax. What that means, though, is what we're not going to worry about performance that much. Most emulators for more modern, powerful consoles are written in C, C++, or another language that gives much more control over memory. We'll also be ignoring the bells and whistles that come with developing finished products, like a nice GUI; rather, we'll focus implementing the instruction set and the core concepts behind it. That said, if there's a language you would like to learn but don't yet have much experience with, I strongly recommend using that instead.
+
+To condense the plan into one sentence, our goal is to emulate the functionality of a game system programmatically by having an endless loop where we fetch low level instructions from ROMs (i.e. game cartridge binary dumps), execute those instructions, and repeat, updating the screen graphics as necessary. This is basically what the real consoles' CPUs are doing at the hardware level.
 
 # System Specification
 
