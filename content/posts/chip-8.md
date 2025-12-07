@@ -12,9 +12,9 @@ If you've ever played console games on your phone or laptop, you're familiar wit
 
 Our road to becoming qualififed emulator developers begins with the CHIP-8. In the 1970s, Joseph Weisbecker developed CHIP-8 as an interpreted programming language for use on a couple of 8-bit microcomputers. We're starting our emulator development journey by building the CHIP-8 virtual machine since it will introduce the concepts needed for the more compicated systems, while still being a short project---it's very feasible to get it running on day one if you dedicate some focused hours to it.
 
-In this tutorial we're going to be writing the emulator in Python, mainly for ease of syntax. What that means, though, is what we're not going to worry about performance that much. Most emulators for more modern, powerful consoles are written in C, C++, or another language that gives much more control over memory. We'll also be ignoring the bells and whistles that come with developing finished products, like a nice GUI; rather, we'll focus implementing the instruction set and the core concepts behind it. That said, if there's a language you would like to learn but don't yet have much experience with, I strongly recommend using that instead.
+In this tutorial we're going to be writing the emulator in Python, mainly for ease of syntax. What that means, though, is what we're not going to worry about performance that much. Most emulators for more modern, powerful consoles are written in C, C++, or another language that gives you more direct control over memory. We'll also be ignoring the bells and whistles that come with developing finished products, like a nice GUI; rather, we'll focus implementing the instruction set and the core concepts behind it. That said, if there's a language you would like to learn but don't yet have much experience with, I strongly recommend using that instead.
 
-To condense the plan into one sentence, our goal is to emulate the functionality of a game system programmatically by having an endless loop where we fetch low level instructions from ROMs (i.e. game cartridge binary dumps), execute those instructions, and repeat, updating the screen graphics as necessary. This is basically what the real consoles' CPUs are doing at the hardware level.
+To condense the plan into one sentence, our goal is to emulate the functionality of a game system programmatically by having an endless loop where we fetch machine instructions encoded into ROMs (i.e. game cartridge binary dumps), execute those instructions, and repeat, updating the screen graphics as necessary. This is basically what the real consoles' CPUs are doing at the hardware level. Real gaming consoles have discrete units of the system to handle things like audio and graphics, but for the CHIP-8, we'll be able to control everything with a small set of CPU instructions.
 
 # System Specification
 
@@ -26,7 +26,7 @@ The CHIP-8 has 4096 bytes of memory, which is `0xFFF` in hexadecimal. However, C
 
 ## Instructions
 
-All CHIP-8 instructions are two bytes, meaning we will read them as is into a 16-bit integer into the **program counter**, with minimum and maximum values of `0x0000` and `0xFFFF`, respectively. However, as you'll see when we get into the actual instructions and their values, the actual domain of possible values is much more limited. 
+All CHIP-8 instructions are two bytes, meaning we will read them as is into a 16-bit unsigned integer **program counter**, with minimum and maximum values of `0x0000` and `0xFFFF`, respectively. However, as you'll see when we get into the actual instructions and their values, the actual domain of possible values is much more limited. 
 
 ## Registers
 
@@ -51,7 +51,7 @@ Since modern computer keyboards have far more keys, you can choose what 16 keys 
 
 ## Graphics
 
-The screen size for CHIP08 systems is 64x32 pixels, for a total of 2048, or `0x148`. So, you can have a 2-dimensional array if you want, but you can also simply represent this as a 1-dimensional array and accessing the element at the coordinates (x,y) using `y * 64 + x`. When it comes to rendering, I've opted for the solution of creating a texture from the pixel array, and then rendering the texture. 
+The screen size for CHIP-8 systems is 64x32 pixels, for a total of 2048, or `0x148`. You can model this as a 2-dimensional array if you want, but you can also simply represent this as a 1-dimensional array and access the element at the coordinates (x,y) using `y * 64 + x`. When it comes to rendering, I've opted for the solution of creating a texture from the pixel array, and then rendering the texture. 
 
 ## Fonts
 
@@ -79,11 +79,11 @@ You should probably have a static array in your emulator so that you can quickly
 
 # Setup
 
-Alright, we're almost ready to do some programming, but first we need to decide what tools we're going to use. In other words, we need to choose a programming language and graphics library. If you're up for the challenge, I recommend trying something new - I usually try to do each new project in a new programming language. For this tutorial, I'm trying to provide a complete guide, so I'll be detailing code and guidance in four languages: C++, Python, Java,and Swift. If you're not an experienced programmer, I suggest you start in Python, as it'll probably have the lowest learning curve.
+Alright, we're almost ready to do some programming, but first we need to decide what tools we're going to use. In other words, we need to choose a programming language and graphics library. If you're up for the challenge, I recommend trying something new - I usually try to do each new project in a new programming language. For this tutorial, I'll be writing everything in Python.
 
 ## Folder Structure, Graphics, and Implementation
 
-There's a number of graphics libraries you can use to render your emulator, but I recommend using [SDL](https://www.libsdl.org/) if you're developing for Windows and use [SpriteKit](https://developer.apple.com/spritekit/) if you're developing for macOS/iOS. Although SDL is a C library, there are bindings for tons of languages out there. I encourage you to determine what folder and file structure works best for you by yourself, as it'll also help you think about abstractions you can make in your code.
+There's a number of graphics libraries you can use to render your emulator, but I recommend using [SDL](https://www.libsdl.org/) if you're developing for Windows and use [SpriteKit](https://developer.apple.com/spritekit/) if you're developing for macOS/iOS. Although SDL is a C library, there are bindings for tons of languages out there. I encourage you to determine what folder and file structure works best for you by yourself, as it'll also help you think about the abstractions you can make in your code.
 
 ## The Main Loop
 
