@@ -1,0 +1,32 @@
+.github/workflows/static.yml
+  s_599381f9c35a52::t_5240517406d66d 34-41
+CLAUDE.md
+  s_599381f9c35a52::t_771123523f37f9 7,11,13,18-22,24-26,30
+public/index.html
+  s_599381f9c35a52::t_3b392e6b27e7a9 68,75
+markdown/shiny-living-dex-part1.md
+  s_599381f9c35a52::t_5db00c9e632935 1-7
+markdown/chip-8.md
+  s_599381f9c35a52::t_028d97ef03aa5a 1-461
+build.py
+  s_599381f9c35a52::t_13ab1222257e24 146
+  s_599381f9c35a52::t_8ff3e143065286 1-145,147-209
+public/posts/chip-8.html
+  s_599381f9c35a52::t_17abcb3e578253 33-49,55-143,148-176,183-192,199-203,205-209,213-219,222-226,229-233,236-240,242-246,248-252,308-312,315-318,320-323,325-328,331-336,350-354,363-367,408-431
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "c54b98b06261869060ddff68e90b88b2ac985a46",
+  "prompts": {},
+  "sessions": {
+    "s_599381f9c35a52": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bbe77746-25f6-46b1-98ce-54c7f2f3f700",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "srikur <srikur@users.noreply.github.com>"
+    }
+  }
+}
