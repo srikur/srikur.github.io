@@ -4,26 +4,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a static HTML/CSS personal portfolio website for Srikur Kanuparthy, hosted on GitHub Pages. The site has zero dependencies—no JavaScript, no build tools, no frameworks.
+This is a static HTML/CSS personal portfolio website for Srikur Kanuparthy, hosted on GitHub Pages. The runtime site has no JavaScript frameworks—just plain HTML/CSS with a tiny theme-toggle script.
 
 ## Deployment
 
-The site deploys automatically via GitHub Actions when changes are pushed to the `main` branch. The workflow uploads the `public/` directory to GitHub Pages.
+The site deploys automatically via GitHub Actions when changes are pushed to `main`. The workflow runs `build.py` to render markdown posts into HTML, then uploads `public/` to GitHub Pages.
 
-**To deploy:** Simply push changes to `main`. No build commands needed.
+**To deploy:** Push changes to `main`. To preview locally, run `python3 build.py` (requires `pip install markdown`).
 
 ## Architecture
 
 ```
+markdown/         # Source of truth for blog posts
+├── chip-8.md     # Each file has YAML frontmatter (title, date, slug, draft?)
+└── ...
+build.py          # Renders markdown/*.md → public/posts/*.html and
+                  # rewrites the Blog section of public/index.html
 public/           # Web root (this directory is deployed)
-├── index.html    # Homepage with profile, projects, and blog links
-├── css/
-│   └── styles.css
-├── posts/        # Blog articles as standalone HTML files
+├── index.html    # Homepage; blog list lives between <!-- POSTS_START --> markers
+├── css/styles.css
+├── posts/        # Generated HTML (overwritten by build.py)
 └── images/
 ```
 
-All content lives in `public/`. Each blog post is a self-contained HTML file that includes its own styles for code blocks and article-specific formatting inline or via the shared stylesheet.
+To add a post: create `markdown/<slug>.md` with frontmatter and write the article in markdown. The build script picks it up automatically. Set `draft: true` to keep a post out of the published site.
 
 ## Styling Conventions
 
