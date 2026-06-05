@@ -24,14 +24,25 @@ I'm planning on doing this one generation at a time, starting with Gen I with Fi
 
 ## Part I -- The Starters (1-9): 
 
-For the starters, we'll be using [this script](), which automates the process of selecting the starter in front of the player, calculating its shinyness, and resetting the save state if it's not. Pretty simple idea. The caveat is that we need to do this 3 times for each starter, since we're building a shiny living dex. This'll come up again for basically any Pokemon that has an evolution line. Although I didn't do it for the starters, I'll be running multiple mGBA instances at once to increase the likelihood that at least one of them will succeed.
+For the starters, we'll be using [this script](https://github.com/srikur/pkmn-shiny-hunting-scripts/blob/main/frlg/frlg_shiny_starters.lua), which automates the process of selecting the starter in front of the player, calculating its shinyness, and resetting the save state if it's not. Pretty simple idea. The caveat is that we need to do this 3 times for each starter, since we're building a shiny living dex. This'll come up again for basically any Pokemon that has an evolution line. Although I didn't do it for the starters, I'll be running multiple mGBA instances at once to increase the likelihood that at least one of them will succeed.
 
 Here's a table of the number of resets it took to get all of them:
 | Starter      | First Shiny | Second Shiny | Third Shiny |
 | ----------- | ----------- | ------------- | ----------- |
 | Bulbasaur   | 6101        | 3469          | 34169       |
 | Squirtle    | 6634        | 1042          | 4279        |
-| Charmander  |             |               |             |
+| Charmander  | 6021        | 4007          | 9222        |
 
+
+That third Bulbasaur took quite the while! Here's all the starters in Box 1 after I traded them over to a single save:
+
+<p align="center">
+  <img src="/images/shiny-frlg/starters_in_box.png" width="50%"  alt="Starters in the PC"/>
+  <img src="/images/shiny-frlg/squirtle_summary.png" width="50%"  alt="Shiny Squirtle Summary"/>
+</p>
+
+Now we're ready to move on to the fun part: catching shinies in the wild!
+
+## Part II -- Route 1 (Pidgey and Rattata)
 
 
