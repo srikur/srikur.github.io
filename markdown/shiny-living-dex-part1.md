@@ -2,8 +2,9 @@
 title: "A Shiny Living Dex for Gen I-IV in 2026: Part I -- 1-151"
 date: 2026-06-04
 slug: shiny-living-dex-part1
-draft: true
 ---
+
+*NOTE: In progress. Will update this as I catch more shinies*
 
 # A Shiny Living Dex for Gen I-IV in 2026: Part I -- 1-151
 
@@ -22,5 +23,15 @@ I'm planning on doing this one generation at a time, starting with Gen I with Fi
 
 
 ## Part I -- The Starters (1-9): 
+
+For the starters, we'll be using [this script](), which automates the process of selecting the starter in front of the player, calculating its shinyness, and resetting the save state if it's not. Pretty simple idea. The caveat is that we need to do this 3 times for each starter, since we're building a shiny living dex. This'll come up again for basically any Pokemon that has an evolution line. Although I didn't do it for the starters, I'll be running multiple mGBA instances at once to increase the likelihood that at least one of them will succeed.
+
+Here's a table of the number of resets it took to get all of them:
+| Starter      | First Shiny | Second Shiny | Third Shiny |
+| ----------- | ----------- | ------------- | ----------- |
+| Bulbasaur   | 6101        | 3469          | 34169       |
+| Squirtle    | 6634        | 1042          | 4279        |
+| Charmander  |             |               |             |
+
 
 
