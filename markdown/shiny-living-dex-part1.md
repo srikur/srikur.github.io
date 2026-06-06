@@ -24,9 +24,10 @@ I'm planning on doing this one generation at a time, starting with Gen I with Fi
 
 ## Part I -- The Starters (1-9): 
 
-For the starters, we'll be using [this script](https://github.com/srikur/pkmn-shiny-hunting-scripts/blob/main/frlg/frlg_shiny_starters.lua), which automates the process of selecting the starter in front of the player, calculating its shinyness, and resetting the save state if it's not. Pretty simple idea. The caveat is that we need to do this 3 times for each starter, since we're building a shiny living dex. This'll come up again for basically any Pokemon that has an evolution line. Although I didn't do it for the starters, I'll be running multiple mGBA instances at once to increase the likelihood that at least one of them will succeed.
+For the starters, we'll be using [this script](https://github.com/srikur/pkmn-shiny-hunting-scripts/blob/main/frlg/frlg_shiny_starters.lua), which automates the process of selecting the starter in front of the player, calculating its shinyness, and resetting the save state if it's not. Pretty simple idea. The caveat is that we need to do this 3 times for each starter, since we're building a shiny living dex. This'll come up again for basically any Pokemon that has an evolution line. I thought I would be able to run multiple mGBA instances, with each one having its own script running, but it doesn't seem to be easily possible -- or at least I couldn't figure it out.
 
 Here's a table of the number of resets it took to get all of them:
+
 | Starter      | First Shiny | Second Shiny | Third Shiny |
 | ----------- | ----------- | ------------- | ----------- |
 | Bulbasaur   | 6101        | 3469          | 34169       |
@@ -43,6 +44,26 @@ That third Bulbasaur took quite the while! Here's all the starters in Box 1 afte
 
 Now we're ready to move on to the fun part: catching shinies in the wild!
 
-## Part II -- Route 1 (Pidgey and Rattata)
+## Part II -- From Pallet Town to Celadon City
+
+Our first non-starter hunt will be for Pidgey and Rattata, the two Pokemon that can be found on Route 1 right after you leave Pallet Town. Unfortunately we actually need to catch 5 -- 3 Pidgeys (Pidgey, Pidgeotto, Pidgeot), and 2 Rattatas (Rattata and Raticate). For this, we'll be using a different Lua script I created, which is intended for automated searching in the grass or any open space where encounters can be had, like surfing or in a cave.
+
+[Here's](https://github.com/srikur/pkmn-shiny-hunting-scripts/blob/main/frlg/frlg_grass_hunting.lua) a link to that script; it allows for setting a target pokemon and ignoring any other shinies that appear which are not that target. Leave the target species variable as `nil` and the allow other shinies variable as `true` to ensure that is turned off.
+
+![Shiny Pidgey in the Wild](/images/shiny-frlg/shiny_pidgey_in_wild.png)
+
+About 60,000 encounters later, we have 5 new shiny specimens! Time to move on to the next route that we have access to, Route 22. This route, west of Viridian City, has grassy areas with wild Rattata, Spearow, and Mankey. We'll need to catch two Spearows (Spearow and Fearow) and two Mankeys (Mankey and Primeape). The good news is that while doing this, I finally figured out how to have multiple mGBA instances running scripts at unthrottled speed at the same time, so I was able to spin up 4 at once. However, I was traveling while doing this section, so I only had a MacBook Air to work with. Later on, I plan on having my much beefier desktop running at an even higher unthrottled speed.
+
+![Four mGBAs running at once](/images/shiny-frlg/four_mgbas.png)
+
+No matter, as after 9731 encounters on one of the instances, I found a shiny Mankey! Quarter of the way there. A few thousand parallelized encounters and an extraneous shiny Rattata later, a shiny Spearow. After catching the Spearow, I realized I would need to pause the hunt for a bit to progress through the game and get some money, as I had run out of Pokeballs.
+
+After catching several more shinies and making my way to Mt. Moon, I decided that to play ahead in the game to get access to Fly and the fourth gym badge, so that I could go back to older routes more easily. It's worth noting that the fossil you choose in Mt. Moon does not have its shinyness calculated until you revive the fossil on Cinnabar Island, so there's no need to worry about that now.
+
+![Charmeleon Evolution](/images/shiny-frlg/charmeleon.png)
+
+## Part III -- In-Game Interactions
+
+Now that we've got a reliable mechanism to hunt for wild Pokemon, we can handle some of the in-game trades and the Pokemon you have to interact with. First up is the Mr. Mime that you can get from a trade on Route 2, in exchange for an Abra. We're not going to waste a shiny Abra on this trade, of course, so the first thing to do is go north of Cerulean to Route 24 and catch any regular Abra.
 
 
