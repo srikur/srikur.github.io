@@ -62,8 +62,22 @@ After catching several more shinies and making my way to Mt. Moon, I decided tha
 
 ![Charmeleon Evolution](/images/shiny-frlg/charmeleon.png)
 
-## Part III -- In-Game Interactions
 
-Now that we've got a reliable mechanism to hunt for wild Pokemon, we can handle some of the in-game trades and the Pokemon you have to interact with. First up is the Mr. Mime that you can get from a trade on Route 2, in exchange for an Abra. We're not going to waste a shiny Abra on this trade, of course, so the first thing to do is go north of Cerulean to Route 24 and catch any regular Abra.
+
+## Part III -- In-Game Static Interactions
+
+Now 
+
+## Part IV -- The Lucky Egg
+
+## Part V -- Taking Stock
+
+## Part VI -- Version Exclusives
+
+## Part VII -- Eggs
+
+## Part VIII -- Fishing
+
+## Part IX -- The Completed Kanto Pokedex
 
 
