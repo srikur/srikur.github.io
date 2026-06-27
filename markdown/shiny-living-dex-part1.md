@@ -1,12 +1,10 @@
 ---
-title: "A Shiny Living Dex for Gen I-IV in 2026"
+title: "A Shiny Living Dex for Gens I-IV in 2026"
 date: 2026-06-04
 slug: shiny-living-dex
 ---
 
-*NOTE: In progress. Will update this as I catch more shinies*
-
-# A Shiny Living Dex for Gen I-IV in 2026: Part I -- 1-151
+# A Shiny Living Dex for Gens I-IV in 2026
 
 I'm somewhat of a Pokemon boomer. It is my belief that the only "real" Pokemon are those numbered 1-493 in the Pokedex -- i.e., Generations I-IV, spanning from the original games to HeartGold and SoulSilver, released in 2010. A few years ago, I completed a goal of mine I had since I was a kid: to catch every single Pokemon in Emerald (1-386) and have a living dex of them. Now, I want to take it a couple of steps further; I want to catch every single Pokemon from Gen I-IV, and I want them all to be shiny. If you're wondering how we're going to do this without cheating, well, we'll be flirting with the line a bit, but we won't do anything that constitutes cheating in my mind. Some of the rules we'll be following:
 
@@ -21,18 +19,20 @@ In order to facilitate the process, I'll be using emulators that allow for scrip
 
 I'm planning on doing this one generation at a time, starting with Gen I with FireRed and LeafGreen. While we could do it with the original Red and Blue, and then transfer the Pokemon over to Gen II to realize their shinyness, and then use unofficial methods to transfer the GBC save file Pokemon over to the GBA games, that's more of a hassle than I'd like to do right now, so we're going to starting with FRLG for 1-151, moving to RSE for the Hoenn dex, and then Emerald for the rest of the National dex up to 386. After that, we'll move over to Diamond, Pearl, and Platinum for the start of Gen IV, and finish up with HeartGold and SoulSilver.
 
-Since the GBA games cover generations I and III, I plan on collecting the first 151, then moving over to Hoenn, to get 252-386, then going to HGSS to fill out Gen II. The primary benefit I see to doing things this way, given that I eventually want to have the completed shiny living dex in my physical HeartGold copy, is that I can save a lot of effort 
+Since the GBA games cover generations I and III, I plan on collecting the first 150 (Mew will need some special handling as you'll see), then moving over to Hoenn, to get 252-386, then going to HGSS to fill out Gen II. The primary benefit I see to doing things this way, given that I eventually want to have the completed shiny living dex in my physical HeartGold copy, is that I can save a lot of effort on the Johto starters. In Gen III, the only way to get a Cyndaquil, Chikorita, or Totodile was to either trade one over from Pokemon XD on the Gamecube, or complete the Hoenn dex in Emerald and receive one of the starters as a gift from Prof. Birch. A much easier path is to soft reset on HGSS to get the shiny starters.
 
 Let's get started!
 
 
-## Part I -- The Starters (1-9): 
+## Part I -- The Starters (1-9):
+
+Soft resetting for shiny starters involves saving in front of the Pokeball in Prof. Oak's lab and repeatedly selecting your desired starter until you find a shiny. That's the exact same process I'll be using, with the added advantages of using save states to minimize the frames between selecting the starter and being able to read memory values to determine if we received a shiny. The script will also allow us to inject randomness into the RNG used by the game, saving us even more frames that would otherwise need to be dedicated to waiting.
 
 For the starters, we'll be using [this script](https://github.com/srikur/pkmn-shiny-hunting-scripts/blob/main/frlg/frlg_shiny_starters.lua), which automates the process of selecting the starter in front of the player, calculating its shinyness, and resetting the save state if it's not. Pretty simple idea. The caveat is that we need to do this 3 times for each starter, since we're building a shiny living dex. This'll come up again for basically any Pokemon that has an evolution line. I thought I would be able to run multiple mGBA instances, with each one having its own script running, but it doesn't seem to be easily possible -- or at least I couldn't figure it out.
 
 Here's a table of the number of resets it took to get all of them:
 
-| Starter      | First Shiny | Second Shiny | Third Shiny |
+| Starter     | First Shiny | Second Shiny  | Third Shiny |
 | ----------- | ----------- | ------------- | ----------- |
 | Bulbasaur   | 6101        | 3469          | 34169       |
 | Squirtle    | 6634        | 1042          | 4279        |
@@ -48,7 +48,7 @@ That third Bulbasaur took quite the while! Here's all the starters in Box 1 afte
 
 Now we're ready to move on to the fun part: catching shinies in the wild!
 
-## Part II -- From Pallet Town to Celadon City
+## Part II -- Wild Pokemon
 
 Our first non-starter hunt will be for Pidgey and Rattata, the two Pokemon that can be found on Route 1 right after you leave Pallet Town. Unfortunately we actually need to catch 5 -- 3 Pidgeys (Pidgey, Pidgeotto, Pidgeot), and 2 Rattatas (Rattata and Raticate). For this, we'll be using a different Lua script I created, which is intended for automated searching in the grass or any open space where encounters can be had, like surfing or in a cave.
 
@@ -70,18 +70,12 @@ After catching several more shinies and making my way to Mt. Moon, I decided tha
 
 ## Part III -- In-Game Static Interactions
 
-Now 
+## Part IV -- Fossils and Gifts
 
 ## Part IV -- The Lucky Egg
 
-## Part V -- Taking Stock
-
-## Part VI -- Version Exclusives
-
-## Part VII -- Eggs
-
-## Part VIII -- Fishing
+## Part V -- The Shiny Egg
 
 ## Part IX -- The Completed Kanto Pokedex
 
-
+## Part X -- Adapting the Scripts to Hoenn
