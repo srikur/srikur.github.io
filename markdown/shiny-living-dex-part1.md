@@ -1,12 +1,12 @@
 ---
-title: "A Shiny Living Dex for Gens I-IV in 2026"
+title: "A Shiny Living Dex for Gens I-III in 2026"
 date: 2026-06-04
 slug: shiny-living-dex
 ---
 
-# A Shiny Living Dex for Gens I-IV in 2026
+# A Shiny Living Dex for Gens I-III in 2026
 
-I'm somewhat of a Pokemon boomer. It is my belief that the only "real" Pokemon are those numbered 1-493 in the Pokedex -- i.e., Generations I-IV, spanning from the original games to HeartGold and SoulSilver, released in 2010. A few years ago, I completed a goal of mine I had since I was a kid: to catch every single Pokemon in Emerald (1-386) and have a living dex of them. Now, I want to take it a couple of steps further; I want to catch every single Pokemon from Gen I-IV, and I want them all to be shiny. If you're wondering how we're going to do this without cheating, well, we'll be flirting with the line a bit, but we won't do anything that constitutes cheating in my mind. Some of the rules we'll be following:
+I'm somewhat of a Pokemon boomer. It is my belief that the only "real" Pokemon are those numbered 1-493 in the Pokedex -- i.e., Generations I-IV, spanning from the original games to HeartGold and SoulSilver, released in 2010. A few years ago, I completed a goal of mine I had since I was a kid: to catch every single Pokemon in Emerald (1-386) and have a living dex of them. Now, I want to take it a couple of steps further; I want to catch every single Pokemon from Gen I-III, and I want them all to be shiny. If you're wondering how we're going to do this without cheating, well, we'll be flirting with the line a bit, but we won't do anything that constitutes cheating in my mind. Some of the rules we'll be following:
 
 - No cheat codes using devices like the Action Replay or GameShark.
 - No cloning or trading with clones.
@@ -17,9 +17,11 @@ The process of finding shinies is already a game of chance, and using an emulato
 
 In order to facilitate the process, I'll be using emulators that allow for scripting in Lua and developing the scripts as we go. All the scripts are available in a public GitHub repo: [Pkmn Shiny Hunting Scripts](https://www.github.com/srikur/pkmn-shiny-hunting-scripts/). The scripts should be compatible with any emulator that supports Lua scripting; I'll be using mGBA. They're also intended for the US versions of the games, but they should be easily adaptable to other localizations if you wish to use them. As you'll see later in the article, one exception is that we'll be using 
 
-I'm planning on doing this one generation at a time, starting with Gen I with FireRed and LeafGreen. While we could do it with the original Red and Blue, and then transfer the Pokemon over to Gen II to realize their shinyness, and then use unofficial methods to transfer the GBC save file Pokemon over to the GBA games, that's more of a hassle than I'd like to do right now, so we're going to starting with FRLG for 1-151, moving to RSE for the Hoenn dex, and then Emerald for the rest of the National dex up to 386. After that, we'll move over to Diamond, Pearl, and Platinum for the start of Gen IV, and finish up with HeartGold and SoulSilver.
+I'm planning on doing this one generation at a time, starting with Gen I with FireRed and LeafGreen. While we could do it with the original Red and Blue, and then transfer the Pokemon over to Gen II to realize their shinyness, and then use unofficial methods to transfer the GBC save file Pokemon over to the GBA games, that's more of a hassle than I'd like to do right now, so we're going to starting with FRLG for 1-151, moving to RSE for the Hoenn dex, and then Emerald for the rest of the National dex up to 386. For most of the Hoenn dex I'll be using Emerald, except for the version exclusives I can't get without Ruby and Sapphire.
 
-Since the GBA games cover generations I and III, I plan on collecting the first 150 (Mew will need some special handling as you'll see), then moving over to Hoenn, to get 252-386, then going to HGSS to fill out Gen II. The primary benefit I see to doing things this way, given that I eventually want to have the completed shiny living dex in my physical HeartGold copy, is that I can save a lot of effort on the Johto starters. In Gen III, the only way to get a Cyndaquil, Chikorita, or Totodile was to either trade one over from Pokemon XD on the Gamecube, or complete the Hoenn dex in Emerald and receive one of the starters as a gift from Prof. Birch. A much easier path is to soft reset on HGSS to get the shiny starters.
+Since the GBA games cover generations I and III, I plan on collecting the first 150 (Mew will need some special handling as you'll see), then moving over to Hoenn to get 252-386, and then filling out the Generation II pokemon using a combination of the Sevii Islands in FRLG and the Safarii Zone in Emerald.
+
+The last important time to note: there are two pokemon for which we'll need to do some special things—Mew and Celebi. The only way for us to get a legitimate shiny Mew in Gen III is to use a Japanese save of Emerald, obtain the Old Sea Map through an event distribution, and then encountering the shiny on Faraway Island. Celebi isn't even possible to legitimately get shiny in Gen III; we're completely out of luck there.
 
 Let's get started!
 
